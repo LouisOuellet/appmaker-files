@@ -58,10 +58,10 @@ API.Plugins.files = {
 					td.html('');
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
-							td.append(API.Plugins.files.Layouts.details.GUI.button(file,{remove:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 4)}));
+							td.append(API.Plugins.files.Layouts.details.GUI.button(file,{download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 1)}));
 						}
 					}
-					if(API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 2)){
+					if(API.Auth.validate('custom', url.searchParams.get("p")+'_files', 2)){
 						td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="upload"><i class="fas fa-file-upload"></i></button>');
 					}
 					API.Plugins.organizations.Layouts.details.Events(data,layout);
