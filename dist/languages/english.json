@@ -1,5 +1,7 @@
 {
 		"files": "files",
 		"Files": "Files",
-		"Download": "Download"
+		"Download": "Download",
+		"Filename": "Filename",
+		"Size": "Size"
 }
