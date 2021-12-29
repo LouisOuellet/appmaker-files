@@ -99,7 +99,8 @@ API.Plugins.files = {
 					var defaults = {};
 					for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 					var body = layout.content.files.find('tbody');
-					var meta = JSON.parse(dataset.meta);
+					var meta = {};
+					if(dataset.meta != ''){ meta = JSON.parse(dataset.meta); }
 					var html = '<tr data-csv="'+csv+'" data-id="'+dataset.id+'">';
 						html += '<td class="pointer">'+dataset.filename+'</td>';
 						html += '<td class="pointer">'+API.Helper.getFileSize(dataset.size)+'</td>';
