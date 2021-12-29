@@ -35,10 +35,15 @@ class filesAPI extends APIextend {
           $file["isAttachment"]
         );
         set_time_limit(20);
-        return $query->dump()['insert_id'];
+        $fileID = $query->dump()['insert_id'];
+        if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$fileID."]File saved\n"; }
+        return $fileID;
       } else {
+        if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$files[0]['id']."]File found\n"; }
         return $files[0]['id'];
       }
+    } else {
+      if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$file["type"]."]This file type blacklisted\n"; }
     }
   }
 }
