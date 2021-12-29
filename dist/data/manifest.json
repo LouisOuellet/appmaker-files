@@ -1,0 +1,20 @@
+{
+    "repository": {
+        "name": "appmaker-files",
+        "branch": "dev",
+        "manifest": "\/dist\/data\/manifest.json",
+        "host": {
+            "git": "https:\/\/github.com\/LouisOuellet\/",
+            "raw": "https:\/\/raw.githubusercontent.com\/LouisOuellet\/"
+        }
+    },
+    "requirements": {
+        "table": [
+            "files"
+        ]
+    },
+    "name": "files",
+    "status": false,
+    "build": 1,
+    "version": "21.12-dev"
+}

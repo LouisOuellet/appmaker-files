@@ -1,0 +1,84 @@
+{
+    "files": {
+        "id": {
+            "order": 1,
+            "type": "int(11)"
+        },
+        "1": "id",
+        "created": {
+            "order": 2,
+            "type": "datetime"
+        },
+        "2": "created",
+        "modified": {
+            "order": 3,
+            "type": "datetime"
+        },
+        "3": "modified",
+        "owner": {
+            "order": 4,
+            "type": "varchar(255)"
+        },
+        "4": "owner",
+        "updated_by": {
+            "order": 5,
+            "type": "varchar(255)"
+        },
+        "5": "updated_by",
+        "name": {
+            "order": 6,
+            "type": "varchar(255)"
+        },
+        "6": "name",
+        "filename": {
+            "order": 7,
+            "type": "varchar(255)"
+        },
+        "7": "filename",
+        "basename": {
+            "order": 8,
+            "type": "varchar(255)"
+        },
+        "8": "basename",
+        "extension": {
+            "order": 9,
+            "type": "varchar(255)"
+        },
+        "9": "extension",
+        "dirname": {
+            "order": 10,
+            "type": "varchar(255)"
+        },
+        "10": "dirname",
+        "file": {
+            "order": 11,
+            "type": "longblob"
+        },
+        "11": "file",
+        "type": {
+            "order": 12,
+            "type": "varchar(255)"
+        },
+        "12": "type",
+        "size": {
+            "order": 13,
+            "type": "varchar(255)"
+        },
+        "13": "size",
+        "encoding": {
+            "order": 14,
+            "type": "varchar(255)"
+        },
+        "14": "encoding",
+        "meta": {
+            "order": 15,
+            "type": "text"
+        },
+        "15": "meta",
+        "isAttachment": {
+            "order": 16,
+            "type": "varchar(255)"
+        },
+        "16": "isAttachment"
+    }
+}
