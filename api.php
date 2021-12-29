@@ -3,7 +3,6 @@ class filesAPI extends APIextend {
   public function save($file){
     if(!isset($this->Settings['plugins']['files']['settings']['blacklist'])||(isset($this->Settings['plugins']['files']['settings']['blacklist']) && is_array($this->Settings['plugins']['files']['settings']['blacklist']) && !in_array($file['type'], $this->Settings['plugins']['files']['settings']['blacklist']))){
       $md5 = md5($file["file"]);
-      if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$md5."]Checksum\n"; }
       $files = $this->Auth->query('SELECT * FROM `files` WHERE `checksum` = ?',$md5)->fetchAll()->all();
       if(empty($files)){
         $query = $this->Auth->query('INSERT INTO `files` (
