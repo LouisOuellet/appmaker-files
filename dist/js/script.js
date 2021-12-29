@@ -85,7 +85,7 @@ API.Plugins.files = {
 					content.append(html);
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
-							API.Plugins.files.Layouts.GUI.addRow(file,layout);
+							API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
 						}
 					}
 				});
