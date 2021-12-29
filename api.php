@@ -36,6 +36,8 @@ class filesAPI extends APIextend {
         );
         set_time_limit(20);
         return $query->dump()['insert_id'];
+      } else {
+        return $files[0]['id'];
       }
     }
   }
