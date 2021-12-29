@@ -7,12 +7,11 @@ API.Plugins.files = {
 		details:function(){},
 	},
 	Timeline:{
-		icon:"file",
+		icon:"file-download",
 		object:function(dataset,layout,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			var defaults = {icon: API.Plugins.files.Timeline.icon,color: "secondary"};
-			if(API.Helper.isSet(options,['icon'])){ defaults.icon = options.icon; }
-			if(API.Helper.isSet(options,['color'])){ defaults.color = options.color; }
+			var defaults = {icon: API.Plugins.files.Timeline.icon,color: "warning"};
+			for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 			if(typeof dataset.id !== 'undefined'){
 				var dateItem = new Date(dataset.created);
 				var dateUS = dateItem.toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'}).replace(/ /g, '-').replace(/,/g, '');
@@ -25,7 +24,7 @@ API.Plugins.files = {
 							html += '<i class="fas fa-'+defaults.icon+' bg-'+defaults.color+'"></i>';
 							html += '<div class="timeline-item">';
 								html += '<span class="time"><i class="fas fa-clock mr-2"></i><time class="timeago" datetime="'+dataset.created.replace(/ /g, "T")+'">'+dataset.created+'</time></span>';
-								html += '<h3 class="timeline-header border-0">'+dataset.filename+' was uploaded<button class="btn btn-xs btn-warning ml-2"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+' ('+API.Helper.getFileSize(dataset.size)+')</button></h3>';
+								html += '<h3 class="timeline-header border-0">'+dataset.filename+'('+API.Helper.getFileSize(dataset.size)+') was uploaded</h3>';
 							html += '</div>';
 						html += '</div>';
 						layout.timeline.find('div.time-label[data-dateus="'+dateUS+'"]').after(html);
@@ -38,7 +37,7 @@ API.Plugins.files = {
 						layout.timeline.append(items);
 						element.find('i').first().addClass('pointer');
 						element.find('i').first().off().click(function(){
-							API.CRUD.read.show({ key:'id',keys:dataset, href:"?p=files&v=details&id="+dataset.id, modal:true });
+							console.log('Download')
 						});
 						if(callback != null){ callback(element); }
 					}
