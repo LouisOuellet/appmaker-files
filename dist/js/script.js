@@ -54,7 +54,7 @@ API.Plugins.files = {
 				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 				API.Builder.Timeline.add.filter(layout,'files','Files');
 				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
-					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
+					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]');
 					td.html('');
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
