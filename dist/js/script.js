@@ -47,6 +47,27 @@ API.Plugins.files = {
 	},
 	Layouts:{
 		details:{
+			detail:function(data,layout,options = {},callback = null){
+				if(options instanceof Function){ callback = options; options = {}; }
+				var url = new URL(window.location.href);
+				var defaults = {field: "files", plugin:url.searchParams.get("p")};
+				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+				API.Builder.Timeline.add.filter(layout,'files','Files');
+				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
+					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="organizations"]');
+					td.html('');
+					if(API.Helper.isSet(data,['relations','files'])){
+						for(var [id, file] of Object.entries(data.relations.files)){
+							td.append(API.Plugins.files.Layouts.details.GUI.button(file,{remove:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 4)}));
+						}
+					}
+					if(API.Auth.validate('custom', url.searchParams.get("p")+'_organizations', 2)){
+						td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="upload"><i class="fas fa-file-upload"></i></button>');
+					}
+					API.Plugins.organizations.Layouts.details.Events(data,layout);
+					if(callback != null){ callback(data,layout,tr); }
+				});
+			},
 			tab:function(data,layout,options = {},callback = null){
 				if(options instanceof Function){ callback = options; options = {}; }
 				var defaults = {};
@@ -60,7 +81,7 @@ API.Plugins.files = {
 							html += '<div class="input-group">';
 								if(API.Auth.validate('plugin', 'files', 2)){
 									html += '<div class="btn-group mr-3">';
-										html += '<button data-action="create" class="btn btn-success"><i class="fas fa-file-upload" aria-hidden="true"></i></button>';
+										html += '<button data-action="upload" class="btn btn-success"><i class="fas fa-file-upload" aria-hidden="true"></i></button>';
 									html += '</div>';
 								}
 								html += '<input type="text" class="form-control">';
@@ -93,6 +114,20 @@ API.Plugins.files = {
 				if(callback != null){ callback(dataset,layout); }
 			},
 			GUI:{
+				button:function(dataset,options = {},callback = null){
+					var url = new URL(window.location.href);
+					if(options instanceof Function){ callback = options; options = {}; }
+					var defaults = {download: false};
+					for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+					var html = '<div class="btn-group m-1" data-id="'+dataset.id+'">';
+						html += '<button type="button" class="btn btn-xs bg-primary"><i class="fas fa-file mr-1"></i>'+dataset.filename+'</button>';
+						if(defaults.download){
+							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-name="'+dataset.name+'" data-action="download"><i class="fas fa-file-download mr-1">'+API.Helper.getFileSize(dataset.size)+'</i></button>';
+						}
+					html += '</div>';
+					if(callback != null){ callback(dataset,html); }
+					return html;
+				},
 				addRow:function(dataset,layout,options = {},callback = null){
 					var url = new URL(window.location.href);
 					if(options instanceof Function){ callback = options; options = {}; }
@@ -107,7 +142,7 @@ API.Plugins.files = {
 						html += '<td class="pointer"></td>';
 						html += '<td>';
 							html += '<div class="btn-group btn-block m-0">';
-								html += '<button class="btn btn-xs btn-warning" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+'</button>';
+								html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+'</button>';
 							html += '</div>';
 						html += '</td>';
 					html += '</tr>';
