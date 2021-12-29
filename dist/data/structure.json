@@ -35,50 +35,40 @@
             "type": "varchar(255)"
         },
         "7": "filename",
-        "basename": {
+        "checksum": {
             "order": 8,
-            "type": "varchar(255)"
+            "type": "text"
         },
-        "8": "basename",
-        "extension": {
+        "8": "checksum",
+        "file": {
             "order": 9,
-            "type": "varchar(255)"
+            "type": "longblob"
         },
-        "9": "extension",
-        "dirname": {
+        "9": "file",
+        "type": {
             "order": 10,
             "type": "varchar(255)"
         },
-        "10": "dirname",
-        "file": {
+        "10": "type",
+        "size": {
             "order": 11,
-            "type": "longblob"
+            "type": "varchar(255)"
         },
-        "11": "file",
-        "type": {
+        "11": "size",
+        "encoding": {
             "order": 12,
             "type": "varchar(255)"
         },
-        "12": "type",
-        "size": {
+        "12": "encoding",
+        "meta": {
             "order": 13,
-            "type": "varchar(255)"
+            "type": "text"
         },
-        "13": "size",
-        "encoding": {
+        "13": "meta",
+        "isAttachment": {
             "order": 14,
             "type": "varchar(255)"
         },
-        "14": "encoding",
-        "meta": {
-            "order": 15,
-            "type": "text"
-        },
-        "15": "meta",
-        "isAttachment": {
-            "order": 16,
-            "type": "varchar(255)"
-        },
-        "16": "isAttachment"
+        "14": "isAttachment"
     }
 }
