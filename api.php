@@ -1,5 +1,5 @@
 <?php
-class filesAPI extends extendedAPI {
+class filesAPI extends APIextend {
   public function save($file){
     if(!isset($this->Settings['plugins']['files']['settings']['blacklist'])||(isset($this->Settings['plugins']['files']['settings']['blacklist']) && is_array($this->Settings['plugins']['files']['settings']['blacklist']) && !in_array($file['type'], $this->Settings['plugins']['files']['settings']['blacklist']))){
       $md5 = md5($file["file"]);
