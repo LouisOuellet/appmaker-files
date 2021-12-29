@@ -21,12 +21,11 @@ API.Plugins.files = {
 					if(layout.timeline.find('div.time-label[data-dateus="'+dateUS+'"]').length > 0){
 						clearInterval(checkExist);
 						API.Builder.Timeline.add.filter(layout,'files','Files');
-						var html = '';
-						html += '<div data-plugin="files" data-id="'+dataset.id+'" data-account="'+dataset.account+'" data-date="'+dateItem.getTime()+'">';
+						var html = '<div data-plugin="files" data-id="'+dataset.id+'" data-date="'+dateItem.getTime()+'">';
 							html += '<i class="fas fa-'+defaults.icon+' bg-'+defaults.color+'"></i>';
 							html += '<div class="timeline-item">';
 								html += '<span class="time"><i class="fas fa-clock mr-2"></i><time class="timeago" datetime="'+dataset.created.replace(/ /g, "T")+'">'+dataset.created+'</time></span>';
-								html += '<h3 class="timeline-header border-0">A File from '+dataset.account+' was linked</h3>';
+								html += '<h3 class="timeline-header border-0">'+dataset.filename+' was uploaded<button class="btn btn-sm btn-warning ml-2">'+API.Contents.Language['Download']+'</button></h3>';
 							html += '</div>';
 						html += '</div>';
 						layout.timeline.find('div.time-label[data-dateus="'+dateUS+'"]').after(html);
