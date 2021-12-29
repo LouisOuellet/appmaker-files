@@ -101,7 +101,7 @@ API.Plugins.files = {
 					var body = layout.content.files.find('tbody');
 					var meta = {};
 					if(dataset.meta != ''){ meta = JSON.parse(dataset.meta); }
-					var html = '<tr data-csv="'+csv+'" data-id="'+dataset.id+'">';
+					var html = '<tr data-csv="'+API.Helper.toCSV(dataset)+'" data-id="'+dataset.id+'">';
 						html += '<td class="pointer">'+dataset.filename+'</td>';
 						html += '<td class="pointer">'+API.Helper.getFileSize(dataset.size)+'</td>';
 						html += '<td class="pointer"></td>';
