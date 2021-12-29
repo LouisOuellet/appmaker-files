@@ -122,7 +122,7 @@ API.Plugins.files = {
 					var html = '<div class="btn-group m-1" data-id="'+dataset.id+'">';
 						html += '<button type="button" class="btn btn-xs bg-primary"><i class="fas fa-file mr-1"></i>'+dataset.filename+'</button>';
 						if(defaults.download){
-							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-name="'+dataset.name+'" data-action="download"><i class="fas fa-file-download mr-1">'+API.Helper.getFileSize(dataset.size)+'</i></button>';
+							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-name="'+dataset.name+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
 						}
 					html += '</div>';
 					if(callback != null){ callback(dataset,html); }
