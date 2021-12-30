@@ -2,17 +2,13 @@
 class filesAPI extends APIextend {
 
   public function upload($request = null, $data = null){
-    $results = [
-      "error" => "WTF!",
-      "request" => $request,
-      "data" => $data,
-    ];
     if(isset($data)){
       if(!is_array($data)){ $data = json_decode($data, true); }
       if($data['encoding'] = 'base64&URI'){ $file['file'] = urldecode(base64_decode($data['file'])); }
       elseif($data['encoding'] = 'base64'){ $file['file'] = base64_decode($data['file']); }
       elseif($data['encoding'] = 'URI'){ $file['file'] = urldecode($data['file']); }
       else { $file['file'] = $data['file']; }
+      unset($data['file']);
       $file["checksum"] = md5($file["file"]);
       $filename = explode('.',$data['filename']);
       $file['name'] = $data['filename'];
@@ -25,15 +21,13 @@ class filesAPI extends APIextend {
       $file['isAttachment'] = '';
       $file['id'] = $this->save($file,["debug" => false]);
       unset($file['file']);
-      var_dump($file['id']);
       if($file['id'] != null && $file['id'] != ''){
-        $relationship = $this->createRelationship([
+        $this->createRelationship([
           'relationship_1' => $data['relationship'],
           'link_to_1' => $data['link_to'],
           'relationship_2' => 'files',
           'link_to_2' => $file['id'],
         ]);
-        var_dump($relationship);
         $return = [
           "success" => $this->Language->Field["File saved!"],
           "request" => $request,
@@ -42,7 +36,6 @@ class filesAPI extends APIextend {
             'file' => $file,
           ],
         ];
-        var_dump($return);
       } else {
         $return = [
           "error" => $this->Language->Field["Unable to save file"],
