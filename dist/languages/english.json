@@ -8,5 +8,6 @@
 		"File not found!": "File not found!",
 		"Viewport": "Viewport",
 		"File saved!": "File saved!",
-		"Unable to save file": "Unable to save file"
+		"Unable to save file": "Unable to save file",
+		"Unable to read file": "Unable to read file"
 }

@@ -36,9 +36,9 @@ API.Plugins.files = {
 					        reader.addEventListener("loadend",function(event){
 										var file = {
 											filename:data.name,
-											file:btoa(encodeURIComponent(event.target.result)),
+											file:btoa(event.target.result),
 											size:data.size,
-											encoding:'base64&URI',
+											encoding:'base64',
 											relationship:url.searchParams.get("p"),
 											link_to:url.searchParams.get("id"),
 										};
@@ -80,7 +80,6 @@ API.Plugins.files = {
 	},
 	delete:function(id,layout){
 		if(API.Auth.validate('plugin', 'files', 4)){
-			alert(id);
 			API.request('files','delete',{data:{id:id}},function(result){
 				var data = JSON.parse(result);
 				if(data.success != undefined){

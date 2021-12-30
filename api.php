@@ -22,28 +22,36 @@ class filesAPI extends APIextend {
       $file['id'] = $this->save($file,["debug" => false]);
       unset($file['file']);
       if($file['id'] != null && $file['id'] != ''){
-        $this->createRelationship([
-          'relationship_1' => $data['relationship'],
-          'link_to_1' => $data['link_to'],
-          'relationship_2' => 'files',
-          'link_to_2' => $file['id'],
-        ]);
-        $return = [
-          "success" => $this->Language->Field["File saved!"],
-          "request" => $request,
-          "data" => $data,
-          "output" => [
-            'file' => $file,
-          ],
-        ];
+        $files = $this->Auth->query('SELECT * FROM `files` WHERE `id` = ?',$file['id'])->fetchAll()->all();
+        if(!empty($files)){
+          $file = $files[0];
+          unset($file['file']);
+          $this->createRelationship([
+            'relationship_1' => $data['relationship'],
+            'link_to_1' => $data['link_to'],
+            'relationship_2' => 'files',
+            'link_to_2' => $file['id'],
+          ]);
+          $return = [
+            "success" => $this->Language->Field["File saved!"],
+            "request" => $request,
+            "data" => $data,
+            "output" => [
+              'file' => $file,
+            ],
+          ];
+        } else {
+          $return = [
+            "error" => $this->Language->Field["Unable to read file"],
+            "request" => $request,
+            "data" => $data,
+          ];
+        }
       } else {
         $return = [
           "error" => $this->Language->Field["Unable to save file"],
           "request" => $request,
           "data" => $data,
-          "output" => [
-            'file' => $file,
-          ],
         ];
       }
     } else {
@@ -74,7 +82,7 @@ class filesAPI extends APIextend {
           }
         }
         // Delete File from Filesystem
-        if(!is_file($file['dirname'].'/'.$file['filename'])){
+        if(is_file($file['dirname'].'/'.$file['filename'])){
           unlink($file['dirname'].'/'.$file['filename']);
         }
         $results = [
