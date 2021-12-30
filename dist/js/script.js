@@ -75,7 +75,7 @@ API.Plugins.files = {
 						layout.timeline.append(items);
 						element.find('i').first().addClass('pointer');
 						element.find('i').first().off().click(function(){
-							API.Plugins.files.download($(this).parent().attr('data-id'));
+							API.Plugins.files.view($(this).parent().attr('data-id'));
 						});
 						if(callback != null){ callback(element); }
 					}
