@@ -33,6 +33,9 @@ class filesAPI extends APIextend {
   				"error" => $this->Language->Field["File not found!"],
   				"request" => $request,
   				"data" => $data,
+          "output" => [
+            'files' => $files,
+          ],
   			];
       }
     } else {
