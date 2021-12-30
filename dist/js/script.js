@@ -35,6 +35,7 @@ API.Plugins.files = {
 									console.log(data);
 									console.log(zone);
 									console.log(zone.files);
+									console.log(zone.getUploadingFiles());
 									// var file = {
 									// 	filename:data.name,
 									// 	dataURL:data.dataURL,
