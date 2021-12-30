@@ -96,7 +96,7 @@ API.Plugins.files = {
 				var footer = modal.find('.modal-footer');
 				header.find('button[data-control="hide"]').remove();
 				header.find('button[data-control="update"]').remove();
-				body.html(API.Contents.Language['Are you sure you want to delete']+name+'?');
+				body.html(API.Contents.Language['Are you sure you want to delete']+'<strong class="ml-2">'+name+'</strong>?');
 				footer.append('<button class="btn btn-danger" data-action="delete"><i class="fas fa-trash-alt mr-1"></i>'+API.Contents.Language['Delete']+'</button>');
 				footer.find('button[data-action="delete"]').off().click(function(){
 					API.request('files','delete',{data:{id:id}},function(result){
