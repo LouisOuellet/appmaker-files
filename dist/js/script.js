@@ -33,17 +33,18 @@ API.Plugins.files = {
 								if(data.status == "success"){
 									clearInterval(checkStatus);
 									console.log(data);
-									console.log(zone);
-									console.log(zone.files);
-									console.log(zone.getAcceptedFiles());
-									console.log(zone.getRejectedFiles());
-									console.log(zone.getQueuedFiles());
-									console.log(zone.getUploadingFiles());
-									// var reader = new FileReader();
-					        // reader.addEventListener("loadend",function(event){
-									// 	// console.log(event.target.result);
-									// });
-					        // reader.readAsText(data);
+									// console.log(zone);
+									// console.log(zone.files);
+									// console.log(zone.getAcceptedFiles());
+									// console.log(zone.getRejectedFiles());
+									// console.log(zone.getQueuedFiles());
+									// console.log(zone.getUploadingFiles());
+									var reader = new FileReader();
+					        reader.addEventListener("loadend",function(event){
+										// console.log(event.target.result);
+									});
+					        reader.readAsText(data);
+									console.log(reader);
 
 
 
