@@ -39,6 +39,9 @@ API.Plugins.files = {
 									console.log(zone.getRejectedFiles());
 									console.log(zone.getQueuedFiles());
 									console.log(zone.getUploadingFiles());
+
+
+
 									// var file = {
 									// 	filename:data.name,
 									// 	dataURL:data.dataURL,
