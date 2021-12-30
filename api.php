@@ -7,13 +7,12 @@ class filesAPI extends APIextend {
       $data['encoding'] = trim(explode(",",$data['dataURL'])[0],' ');
       if(strpos($data['encoding'],'base64') !== false){ $file['file'] = base64_decode(trim(explode(",",$data['dataURL'])[1],' ')); }
       else { $file['file'] = trim(explode(",",$data['dataURL'])[1],' '); }
-      var_dump(ibase_blob_info($file['file']));
       // $filename = explode('.',$data['filename']);
       // $file['name'] = $data['filename'];
       // $file['filename'] = $data['filename'];
       // $file['dirname'] = '';
       // $file['type'] = end($filename);
-      // $file['size'] = ;
+      // $file['size'] = $data['size'];
       // $file['encoding'] = $data['encoding'];
       // $file['meta'] = null;
       // $file['isAttachment'] = null;

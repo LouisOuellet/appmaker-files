@@ -33,6 +33,8 @@ API.Plugins.files = {
 								if(data.status == "success"){
 									clearInterval(checkStatus);
 									console.log(data);
+									console.log(zone);
+									console.log(zone.getUploadingFiles());
 									// var file = {
 									// 	filename:data.name,
 									// 	dataURL:data.dataURL,
@@ -65,7 +67,7 @@ API.Plugins.files = {
 							}, 100);
 							break;
 						default:
-							console.log(action,zone,data);
+							// console.log(action,zone,data);
 							break;
 					}
 				});
