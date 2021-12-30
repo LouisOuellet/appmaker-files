@@ -1,6 +1,9 @@
 .icon-files::before,.icon-file::before{
 	content: "\f15b";
 }
+.icon-viewport::before{
+	content: "\f06e";
+}
 .view-iframe{
 	border: none;
 	height: 500px;

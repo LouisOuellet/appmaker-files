@@ -25,9 +25,9 @@ API.Plugins.files = {
 			if(data.success != undefined){
 				API.Builder.modal($('body'), {
 					title:'Viewport',
-					icon:'file',
+					icon:'viewport',
 					zindex:'top',
-					css:{ header: "bg-primary"},
+					css:{ dialog: "modal-full", header: "bg-primary", body: "p-0"},
 				}, function(modal){
 					modal.on('hide.bs.modal',function(){ modal.remove(); });
 					var dialog = modal.find('.modal-dialog');
