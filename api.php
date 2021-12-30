@@ -2,6 +2,11 @@
 class filesAPI extends APIextend {
 
   public function upload($request = null, $data = null){
+    $results = [
+      "error" => "WTF!",
+      "request" => $request,
+      "data" => $data,
+    ];
     if(isset($data)){
       if(!is_array($data)){ $data = json_decode($data, true); }
       if($data['encoding'] = 'base64&URI'){ $file['file'] = urldecode(base64_decode($data['file'])); }
