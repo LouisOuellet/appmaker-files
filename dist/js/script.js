@@ -155,7 +155,19 @@ API.Plugins.files = {
 						html += '</table>';
 					html += '</div>';
 					content.append(html);
-					content.find('button[data-action="upload"]').off().click(function(){
+					var search = content.find('div.row').eq(0);
+					var files = content.find('div.row').eq(1);
+					search.find('div[data-action="clear"]').off().click(function(){
+						$(this).parent().find('input').val('');
+						files.find('[data-csv]').show();
+					});
+					search.find('input').off().on('input',function(){
+						if($(this).val() != ''){
+							files.find('[data-csv]').hide();
+							files.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
+						} else { files.find('[data-csv]').show(); }
+					});
+					search.find('button[data-action="upload"]').off().click(function(){
 						API.Plugins.files.upload();
 					});
 					if(API.Helper.isSet(data,['relations','files'])){
