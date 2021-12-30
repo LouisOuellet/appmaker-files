@@ -69,6 +69,7 @@ class filesAPI extends APIextend {
       $files = $this->Auth->query('SELECT * FROM `files` WHERE `id` = ?',$data['id'])->fetchAll()->all();
       if(!empty($files)){
         $file = $files[0];
+        unset($file['file']);
         // Delete File from DB
         $this->Auth->delete('files',$file['id']);
         // Fetch Relationships

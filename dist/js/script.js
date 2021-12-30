@@ -68,6 +68,10 @@ API.Plugins.files = {
 								}
 							}, 100);
 							break;
+						case"queuecomplete":
+							if(API.debug){ console.log(action,zone,data); }
+							modal.modal('hide');
+							break;
 						default:
 							if(API.debug){ console.log(action,zone,data); }
 							break;
@@ -77,21 +81,41 @@ API.Plugins.files = {
 			});
 		}
 	},
-	delete:function(id,layout){
+	delete:function(id,name,layout){
 		if(API.Auth.validate('plugin', 'files', 4)){
-			API.request('files','delete',{data:{id:id}},function(result){
-				var data = JSON.parse(result);
-				if(data.success != undefined){
-					if(API.Helper.isSet(layout,['timeline'])){
-						layout.timeline.find('div[data-plugin="files"][data-id="'+data.output.file.id+'"]').remove();
-					}
-					if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
-						layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').find('div[data-id="'+data.output.file.id+'"]').remove();
-					}
-					if(API.Helper.isSet(layout,['content','files'])){
-						layout.content.files.find('tr[data-id="'+data.output.file.id+'"]').remove();
-					}
-				}
+			API.Builder.modal($('body'), {
+				title:'Are you sure?',
+				icon:'delete',
+				zindex:'top',
+				css:{ header: "bg-danger", body: "p-3"},
+			}, function(modal){
+				modal.on('hide.bs.modal',function(){ modal.remove(); });
+				var dialog = modal.find('.modal-dialog');
+				var header = modal.find('.modal-header');
+				var body = modal.find('.modal-body');
+				var footer = modal.find('.modal-footer');
+				header.find('button[data-control="hide"]').remove();
+				header.find('button[data-control="update"]').remove();
+				body.html(API.Contents.Language['Are you sure you want to delete']+name+'?');
+				footer.append('<button class="btn btn-danger" data-action="delete"><i class="fas fa-trash-alt mr-1"></i>'+API.Contents.Language['Delete']+'</button>');
+				footer.find('button[data-action="delete"]').off().click(function(){
+					API.request('files','delete',{data:{id:id}},function(result){
+						var data = JSON.parse(result);
+						if(data.success != undefined){
+							if(API.Helper.isSet(layout,['timeline'])){
+								layout.timeline.find('div[data-plugin="files"][data-id="'+data.output.file.id+'"]').remove();
+							}
+							if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
+								layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').find('div[data-id="'+data.output.file.id+'"]').remove();
+							}
+							if(API.Helper.isSet(layout,['content','files'])){
+								layout.content.files.find('tr[data-id="'+data.output.file.id+'"]').remove();
+							}
+						}
+					});
+					modal.modal('hide');
+				});
+				modal.modal('show');
 			});
 		}
 	},
@@ -198,7 +222,7 @@ API.Plugins.files = {
 								API.Plugins.files.download($(this).attr('data-id'));
 							});
 							td.find('button[data-action="delete"]').off().click(function(){
-								API.Plugins.files.delete($(this).attr('data-id'),layout);
+								API.Plugins.files.delete($(this).attr('data-id'),$(this).attr('data-name'),layout);
 							});
 						}
 					}
@@ -283,7 +307,7 @@ API.Plugins.files = {
 							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
 						}
 						if(defaults.delete){
-							html += '<button type="button" class="btn btn-xs bg-danger" data-id="'+dataset.id+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
+							html += '<button type="button" class="btn btn-xs bg-danger" data-id="'+dataset.id+'" data-name="'+dataset.filename+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
 						}
 					html += '</div>';
 					if(callback != null){ callback(dataset,html); }
@@ -308,7 +332,7 @@ API.Plugins.files = {
 										html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+'</button>';
 									}
 									if(defaults.delete){
-										html += '<button class="btn btn-xs btn-danger" data-id="'+dataset.id+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
+										html += '<button class="btn btn-xs btn-danger" data-id="'+dataset.id+'" data-name="'+dataset.filename+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
 									}
 								html += '</div>';
 							html += '</td>';
@@ -327,7 +351,7 @@ API.Plugins.files = {
 						}
 						if(defaults.delete){
 							tr.find('button[data-action="delete"]').off().click(function(){
-								API.Plugins.files.delete($(this).attr('data-id'),layout);
+								API.Plugins.files.delete($(this).attr('data-id'),$(this).attr('data-name'),layout);
 							});
 						}
 					}
