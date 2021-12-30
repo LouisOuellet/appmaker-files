@@ -36,6 +36,7 @@ API.Plugins.files = {
 					var footer = modal.find('.modal-footer');
 					header.find('button[data-control="hide"]').remove();
 					header.find('button[data-control="update"]').remove();
+					footer.remove();
 					body.append('<iframe class="view-iframe"></iframe>');
 					var iframe = body.find('iframe');
 					iframe.attr('src',data.output.file.dirname+'/'+data.output.file.filename);
