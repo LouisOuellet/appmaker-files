@@ -25,13 +25,15 @@ class filesAPI extends APIextend {
       $file['isAttachment'] = '';
       $file['id'] = $this->save($file,["debug" => false]);
       unset($file['file']);
-      if($file['id'] != null || $file['id'] != ''){
-        $this->createRelationship([
+      var_dump($file['id']);
+      if($file['id'] != null && $file['id'] != ''){
+        $relationship = $this->createRelationship([
           'relationship_1' => $data['relationship'],
           'link_to_1' => $data['link_to'],
           'relationship_2' => 'files',
           'link_to_2' => $file['id'],
         ]);
+        var_dump($relationship);
         $return = [
           "success" => $this->Language->Field["File saved!"],
           "request" => $request,
@@ -40,6 +42,7 @@ class filesAPI extends APIextend {
             'file' => $file,
           ],
         ];
+        var_dump($return);
       } else {
         $return = [
           "error" => $this->Language->Field["Unable to save file"],
