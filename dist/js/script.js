@@ -36,6 +36,7 @@ API.Plugins.files = {
 									// var file = {
 									// 	filename:data.name,
 									// 	dataURL:data.dataURL,
+									// 	size:data.size,
 									// 	relationship:url.searchParams.get("p"),
 									// 	link_to:url.searchParams.get("id"),
 									// };
