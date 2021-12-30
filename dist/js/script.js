@@ -9,18 +9,12 @@ API.Plugins.files = {
 	download:function(id){
 		console.log(id);
 		API.request('files','download',{data:{id:id}},function(result){
-			console.log(result);
 			var data = JSON.parse(result);
-			console.log(data);
 			if(data.success != undefined){
-				console.log("Here's the file");
-				console.log(data.output.file);
-				console.log('Creating iframe');
 				$('body').append('<iframe class="downloadIFRAME"></iframe>');
 				var iframe = $('body').find('iframe.downloadIFRAME').last();
 				console.log(iframe);
-				console.log('Insert file URL');
-				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
+				iframe.attr('src',data.output.file.dirname+'/'+data.output.file.filename);
 				// iframe.remove();
 			}
 		});
