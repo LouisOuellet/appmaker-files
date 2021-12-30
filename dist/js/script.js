@@ -8,6 +8,50 @@ API.Plugins.files = {
 	},
 	upload:function(){
 		console.log("Upload modal here");
+		API.Builder.modal($('body'), {
+			title:'Upload',
+			icon:'upload',
+			zindex:'top',
+			css:{ dialog: "modal-lg", header: "bg-purple", body: "p-3"},
+		}, function(modal){
+			modal.on('hide.bs.modal',function(){ modal.remove(); });
+			var dialog = modal.find('.modal-dialog');
+			var header = modal.find('.modal-header');
+			var body = modal.find('.modal-body');
+			var footer = modal.find('.modal-footer');
+			header.find('button[data-control="hide"]').remove();
+			header.find('button[data-control="update"]').remove();
+			API.Builder.dropzone(body,function(action,zone,data){
+				switch(action){
+					case"sending":
+						var checkStatus = setInterval(function(){
+							if(data.status != "success" && data.status != "uploading"){
+								console.log(data.status);
+								clearInterval(checkStatus);
+							}
+							if(data.status == "success"){
+								clearInterval(checkStatus);
+								var picture = {
+									basename:data.name,
+									dataURL:data.dataURL,
+									event:dataset.this.raw.id,
+								};
+								API.request('events','upload',{data:picture},function(result){
+									var response = JSON.parse(result);
+									if(response.success != undefined){
+										API.Plugins.events.GUI.picture(response.output.picture,layout);
+									}
+								});
+							}
+						}, 100);
+						break;
+					default:
+						console.log(action,zone,data);
+						break;
+				}
+			});
+			modal.modal('show');
+		});
 	},
 	download:function(id){
 		API.request('files','download',{data:{id:id}},function(result){

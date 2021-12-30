@@ -4,6 +4,9 @@
 .icon-viewport::before{
 	content: "\f06e";
 }
+.icon-upload::before{
+	content: "\f093";
+}
 .view-iframe{
 	border: none;
 	height: calc(100vh - 130px);
