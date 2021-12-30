@@ -24,7 +24,7 @@ API.Plugins.files = {
 				$('body').append('<iframe class="downloadIFRAME"></iframe>');
 				var iframe = $('body').find('iframe.downloadIFRAME').last();
 				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
-				iframe.remove();
+				// iframe.remove();
 			}
 		});
 	},
