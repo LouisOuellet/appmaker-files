@@ -83,6 +83,7 @@ API.Plugins.files = {
 	},
 	delete:function(id,name,layout){
 		if(API.Auth.validate('plugin', 'files', 4)){
+			var url = new URL(window.location.href);
 			API.Builder.modal($('body'), {
 				title:'Are you sure?',
 				icon:'delete',
