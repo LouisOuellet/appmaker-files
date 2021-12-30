@@ -40,8 +40,9 @@ API.Plugins.files = {
 									// console.log(zone.getQueuedFiles());
 									// console.log(zone.getUploadingFiles());
 									var reader = new FileReader();
-					        // reader.addEventListener("loadend",function(event){});
+					        reader.addEventListener("loadend",function(event){});
 					        reader.readAsText(data);
+									console.log(reader);
 									var file = {
 										filename:data.name,
 										file:btoa(reader.result),
