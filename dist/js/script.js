@@ -32,7 +32,7 @@ API.Plugins.files = {
 								}
 								if(data.status == "success"){
 									clearInterval(checkStatus);
-									console.log(data.dataURL);
+									console.log(data);
 									var file = {
 										filename:data.name,
 										dataURL:data.dataURL,
