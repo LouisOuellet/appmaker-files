@@ -47,13 +47,13 @@ class filesAPI extends APIextend {
         ];
       }
     } else {
-			$results = [
+			$return = [
 				"error" => $this->Language->Field["Unable to complete the request"],
 				"request" => $request,
 				"data" => $data,
 			];
 		}
-		return $results;
+		return $return;
   }
 
   public function delete($request = null, $data = null){
