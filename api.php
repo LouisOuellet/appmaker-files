@@ -7,7 +7,7 @@ class filesAPI extends APIextend {
       $files = $this->Auth->query('SELECT * FROM `files` WHERE `id` = ?',$data['id'])->fetchAll()->all();
       if(empty($files)){
         $file = $files[0];
-        if(!isset($file['dirname']) || empty($file['dirname'] || $file['dirname'] == ''){
+        if(!isset($file['dirname']) || empty($file['dirname']) || $file['dirname'] == ''){
           $file['dirname'] = 'data/files/'.$file['id'];
           $this->save($file);
         }
