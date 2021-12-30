@@ -32,7 +32,7 @@ API.Plugins.files = {
 								}
 								if(data.status == "success"){
 									clearInterval(checkStatus);
-									console.log(data);
+									// console.log(data);
 									// console.log(zone);
 									// console.log(zone.files);
 									// console.log(zone.getAcceptedFiles());
@@ -40,21 +40,17 @@ API.Plugins.files = {
 									// console.log(zone.getQueuedFiles());
 									// console.log(zone.getUploadingFiles());
 									var reader = new FileReader();
-					        reader.addEventListener("loadend",function(event){
-										// console.log(event.target.result);
-									});
+					        // reader.addEventListener("loadend",function(event){});
 					        reader.readAsText(data);
-									console.log(reader);
-
-
-
-									// var file = {
-									// 	filename:data.name,
-									// 	dataURL:data.dataURL,
-									// 	size:data.size,
-									// 	relationship:url.searchParams.get("p"),
-									// 	link_to:url.searchParams.get("id"),
-									// };
+									var file = {
+										filename:data.name,
+										file:btoa(reader.result),
+										size:data.size,
+										encoding:'base64',
+										relationship:url.searchParams.get("p"),
+										link_to:url.searchParams.get("id"),
+									};
+									console.log(file);
 									// API.request('files','upload',{data:file},function(result){
 									// 	var response = JSON.parse(result);
 									// 	if(response.success != undefined){

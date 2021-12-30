@@ -4,9 +4,8 @@ class filesAPI extends APIextend {
   public function upload($request = null, $data = null){
     if(isset($data)){
       if(!is_array($data)){ $data = json_decode($data, true); }
-      $data['encoding'] = trim(explode(",",$data['dataURL'])[0],' ');
-      if(strpos($data['encoding'],'base64') !== false){ $file['file'] = base64_decode(trim(explode(",",$data['dataURL'])[1],' ')); }
-      else { $file['file'] = trim(explode(",",$data['dataURL'])[1],' '); }
+      if(strpos($data['encoding'],'base64') !== false){ $file['file'] = base64_decode($data['file']); }
+      else { $file['file'] = $data['file']; }
       // $filename = explode('.',$data['filename']);
       // $file['name'] = $data['filename'];
       // $file['filename'] = $data['filename'];
