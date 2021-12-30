@@ -65,7 +65,7 @@ API.Plugins.files = {
 											}
 										});
 									});
-					        reader.readAsText(data);
+					        reader.readAsText(data,'UTF-8');
 								}
 							}, 100);
 							break;
