@@ -7,18 +7,9 @@ API.Plugins.files = {
 		details:function(){},
 	},
 	download:function(id){
+		console.log(id);
 		API.request('files','download',{data:{id:id}},function(result){
-			var data = JSON.parse(result);
-			if(data.success != undefined){
-				$('body').append('<iframe class="downloadIFRAME"></iframe>');
-				var iframe = $('body').find('iframe.downloadIFRAME').last();
-				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
-				iframe.remove();
-			}
-		});
-	},
-	view:function(id){
-		API.request('files','download',{data:{id:id}},function(result){
+			console.log(result);
 			var data = JSON.parse(result);
 			console.log(data);
 			if(data.success != undefined){
@@ -34,6 +25,7 @@ API.Plugins.files = {
 			}
 		});
 	},
+	view:function(id){},
 	Timeline:{
 		icon:"file-download",
 		object:function(dataset,layout,options = {},callback = null){
