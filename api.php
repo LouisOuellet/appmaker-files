@@ -9,7 +9,7 @@ class filesAPI extends APIextend {
         $file = $files[0];
         if(!isset($file['dirname']) || empty($file['dirname']) || $file['dirname'] == ''){
           $file['dirname'] = 'data/files/'.$file['id'];
-          $this->save($file,true);
+          $this->save($file,["force" => true,"debug" => false]);
         }
         if(!is_file($file['dirname'].'/'.$file['filename'])){
           if(!is_dir($file['dirname']) && !is_file($file['dirname'])){
@@ -45,7 +45,7 @@ class filesAPI extends APIextend {
 		return $results;
   }
 
-  public function save($file,$force = false){
+  public function save($file,$options = []){
     if(!isset($this->Settings['plugins']['files']['settings']['blacklist'])||(isset($this->Settings['plugins']['files']['settings']['blacklist']) && is_array($this->Settings['plugins']['files']['settings']['blacklist']) && !in_array($file['type'], $this->Settings['plugins']['files']['settings']['blacklist']))){
       $md5 = md5($file["file"]);
       $files = $this->Auth->query('SELECT * FROM `files` WHERE `checksum` = ? OR (`filename` = ? AND `size` = ?) OR (`name` = ? AND `size` = ?)',$md5,$file["filename"],$file["size"],$file["name"],$file["size"])->fetchAll()->all();
@@ -83,10 +83,10 @@ class filesAPI extends APIextend {
         );
         set_time_limit(20);
         $fileID = $query->dump()['insert_id'];
-        if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$fileID."]File ".$file["filename"]." saved\n"; }
+        if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['force']) || (isset($options['force']) && $options['force']))){ echo "[".$fileID."]File ".$file["filename"]." saved\n"; }
         return $fileID;
       } else {
-        if($force){
+        if(isset($options['force']) && $options['force']){
           $query = $this->Auth->query('UPDATE `files` SET
             `modified` = ?,
             `updated_by` = ?,
@@ -117,11 +117,11 @@ class filesAPI extends APIextend {
           ]);
           $dump = $query->dump();
         }
-        if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$files[0]['id']."]File ".$file["filename"]." found\n"; }
+        if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['force']) || (isset($options['force']) && $options['force']))){ echo "[".$files[0]['id']."]File ".$file["filename"]." found\n"; }
         return $files[0]['id'];
       }
     } else {
-      if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$file["type"]."]This file type blacklisted\n"; }
+      if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['force']) || (isset($options['force']) && $options['force']))){ echo "[".$file["type"]."]This file type blacklisted\n"; }
     }
   }
 }
