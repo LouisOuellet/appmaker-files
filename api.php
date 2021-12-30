@@ -4,11 +4,10 @@ class filesAPI extends APIextend {
   public function upload($request = null, $data = null){
     if(isset($data)){
       if(!is_array($data)){ $data = json_decode($data, true); }
-      if($data['encoding'] = 'base64&URI'){ $file['file'] = urldecode(base64_decode($data['file'])); }
-      elseif($data['encoding'] = 'base64'){ $file['file'] = base64_decode($data['file']); }
-      elseif($data['encoding'] = 'URI'){ $file['file'] = urldecode($data['file']); }
-      else { $file['file'] = $data['file']; }
-      unset($data['file']);
+			$file['encoding'] = trim(explode(",",$data['dataURL'])[0],' ');
+			if(strpos($file['encoding'],'base64') !== false){ $file['file'] = base64_decode(trim(explode(",",$data['dataURL'])[1],' ')); }
+			else { $file['file'] = trim(explode(",",$data['dataURL'])[1],' '); }
+      unset($data['dataURL']);
       $file["checksum"] = md5($file["file"]);
       $filename = explode('.',$data['filename']);
       $file['name'] = $data['filename'];
@@ -16,7 +15,6 @@ class filesAPI extends APIextend {
       $file['dirname'] = '';
       $file['type'] = end($filename);
       $file['size'] = $data['size'];
-      $file['encoding'] = $data['encoding'];
       $file['meta'] = '';
       $file['isAttachment'] = '';
       $file['id'] = $this->save($file,["debug" => false]);

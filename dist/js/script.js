@@ -37,9 +37,8 @@ API.Plugins.files = {
 										console.log(event.target.result);
 										// var file = {
 										// 	filename:data.name,
-										// 	file:btoa(event.target.result),
+										// 	dataURL:event.target.result,
 										// 	size:data.size,
-										// 	encoding:'base64',
 										// 	relationship:url.searchParams.get("p"),
 										// 	link_to:url.searchParams.get("id"),
 										// };
