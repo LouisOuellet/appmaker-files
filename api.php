@@ -8,6 +8,7 @@ class filesAPI extends APIextend {
       elseif($data['encoding'] = 'base64'){ $file['file'] = base64_decode($data['file']); }
       elseif($data['encoding'] = 'URI'){ $file['file'] = urldecode($data['file']); }
       else { $file['file'] = $data['file']; }
+      $file["checksum"] = md5($file["file"]);
       $filename = explode('.',$data['filename']);
       $file['name'] = $data['filename'];
       $file['filename'] = $data['filename'];
@@ -15,8 +16,8 @@ class filesAPI extends APIextend {
       $file['type'] = end($filename);
       $file['size'] = $data['size'];
       $file['encoding'] = $data['encoding'];
-      $file['meta'] = null;
-      $file['isAttachment'] = null;
+      $file['meta'] = '';
+      $file['isAttachment'] = '';
       $file['id'] = $this->save($file,["force" => true, "debug" => false]);
       unset($file['file']);
       if($file['id'] != null || $file['id'] != ''){
