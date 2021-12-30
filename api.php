@@ -86,6 +86,35 @@ class filesAPI extends APIextend {
         if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$fileID."]File ".$file["filename"]." saved\n"; }
         return $fileID;
       } else {
+        $query = $this->Auth->query('UPDATE `files` SET
+          `modified` = ?,
+          `updated_by` = ?,
+          `name` = ?,
+          `filename` = ?,
+          `dirname` = ?,
+          `checksum` = ?,
+          `file` = ?,
+          `type` = ?,
+          `size` = ?,
+          `encoding` = ?,
+          `meta` = ?,
+          `isAttachment` = ?
+        WHERE `id` = ?',[
+          date("Y-m-d H:i:s"),
+          $this->Auth->User['id'],
+          $file["name"],
+          $file["filename"],
+          $file["dirname"],
+          $file["checksum"],
+          $file["file"],
+          $file["type"],
+          $file["size"],
+          $file["encoding"],
+          $file["meta"],
+          $file["isAttachment"],
+          $file["id"]
+        ]);
+        $dump = $query->dump();
         if(isset($this->Settings['debug']) && $this->Settings['debug']){ echo "[".$files[0]['id']."]File ".$file["filename"]." found\n"; }
         return $files[0]['id'];
       }
