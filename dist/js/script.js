@@ -20,6 +20,7 @@ API.Plugins.files = {
 	view:function(id){
 		API.request('files','download',{data:{id:id}},function(result){
 			var data = JSON.parse(result);
+			console.log(data);
 			if(data.success != undefined){
 				console.log("Here's the file");
 				console.log(data.output.file);
