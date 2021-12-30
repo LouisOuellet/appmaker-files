@@ -21,6 +21,8 @@ API.Plugins.files = {
 		API.request('files','download',{data:{id:id}},function(result){
 			var data = JSON.parse(result);
 			if(data.success != undefined){
+				console.log("Here's the file");
+				console.log(data.output.file);
 				console.log('Creating iframe');
 				$('body').append('<iframe class="downloadIFRAME"></iframe>');
 				var iframe = $('body').find('iframe.downloadIFRAME').last();
