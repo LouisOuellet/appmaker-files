@@ -5,8 +5,7 @@ class filesAPI extends APIextend {
 		if(($data != null)||($data == null)){
 			if(!is_array($data)){ $data = json_decode($data, true); }
       $files = $this->Auth->query('SELECT * FROM `files` WHERE `id` = ?',$data['id'])->fetchAll()->all();
-      var_dump($files);
-      if(empty($files)){
+      if(!empty($files)){
         $file = $files[0];
         var_dump($file['id']);
         if(!isset($file['dirname']) || empty($file['dirname']) || $file['dirname'] == ''){
