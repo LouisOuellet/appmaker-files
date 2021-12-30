@@ -8,32 +8,42 @@ class filesAPI extends APIextend {
       elseif($data['encoding'] = 'base64'){ $file['file'] = base64_decode($data['file']); }
       elseif($data['encoding'] = 'URI'){ $file['file'] = urldecode($data['file']); }
       else { $file['file'] = $data['file']; }
-      // $filename = explode('.',$data['filename']);
-      // $file['name'] = $data['filename'];
-      // $file['filename'] = $data['filename'];
-      // $file['dirname'] = '';
-      // $file['type'] = end($filename);
-      // $file['size'] = $data['size'];
-      // $file['encoding'] = $data['encoding'];
-      // $file['meta'] = null;
-      // $file['isAttachment'] = null;
-      // $file['id'] = $this->save($file,["force" => true, "debug" => false]);
-      // if($file['id'] != null || $file['id'] != ''){
-      //   $return = [
-      //     "success" => $this->Language->Field["File saved!"],
-      //     "request" => $request,
-      //     "data" => $data,
-      //     "output" => [
-      //       'file' => $file,
-      //     ],
-      //   ];
-      // } else {
-      //   $return = [
-      //     "error" => $this->Language->Field["Unable to save file"],
-      //     "request" => $request,
-      //     "data" => $data,
-      //   ];
-      // }
+      $filename = explode('.',$data['filename']);
+      $file['name'] = $data['filename'];
+      $file['filename'] = $data['filename'];
+      $file['dirname'] = '';
+      $file['type'] = end($filename);
+      $file['size'] = $data['size'];
+      $file['encoding'] = $data['encoding'];
+      $file['meta'] = null;
+      $file['isAttachment'] = null;
+      $file['id'] = $this->save($file,["force" => true, "debug" => false]);
+      unset($file['file']);
+      if($file['id'] != null || $file['id'] != ''){
+        $this->createRelationship([
+          'relationship_1' => $data['relationship'],
+          'link_to_1' => $data['link_to'],
+          'relationship_2' => 'files',
+          'link_to_2' => $file['id'],
+        ]);
+        $return = [
+          "success" => $this->Language->Field["File saved!"],
+          "request" => $request,
+          "data" => $data,
+          "output" => [
+            'file' => $file,
+          ],
+        ];
+      } else {
+        $return = [
+          "error" => $this->Language->Field["Unable to save file"],
+          "request" => $request,
+          "data" => $data,
+          "output" => [
+            'file' => $file,
+          ],
+        ];
+      }
     } else {
 			$results = [
 				"error" => $this->Language->Field["Unable to complete the request"],
