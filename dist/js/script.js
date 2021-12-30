@@ -34,38 +34,40 @@ API.Plugins.files = {
 									clearInterval(checkStatus);
 									var reader = new FileReader();
 					        reader.addEventListener("loadend",function(event){
-										var file = {
-											filename:data.name,
-											file:btoa(event.target.result),
-											size:data.size,
-											encoding:'base64',
-											relationship:url.searchParams.get("p"),
-											link_to:url.searchParams.get("id"),
-										};
-										if(API.debug){ console.log(file); }
-										API.request('files','upload',{data:file},function(result){
-											var response = JSON.parse(result);
-											if(response.success != undefined){
-												if(API.Helper.isSet(layout,['timeline'])){
-													API.Plugins.files.Timeline.object(response.output.file,layout);
-												}
-												if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
-													var td = layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]');
-													td.prepend(API.Plugins.files.Layouts.details.GUI.button(response.output.file,{download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 1)}));
-													td.find('button[data-action="view"').off().click(function(){
-													  API.Plugins.files.view($(this).attr('data-id'));
-													});
-													td.find('button[data-action="download"]').off().click(function(){
-													  API.Plugins.files.download($(this).attr('data-id'));
-													});
-												}
-												if(API.Helper.isSet(layout,['content','files'])){
-													API.Plugins.files.Layouts.details.GUI.addRow(response.output.file,layout);
-												}
-											}
-										});
+										console.log(event.target.result);
+										// var file = {
+										// 	filename:data.name,
+										// 	file:btoa(event.target.result),
+										// 	size:data.size,
+										// 	encoding:'base64',
+										// 	relationship:url.searchParams.get("p"),
+										// 	link_to:url.searchParams.get("id"),
+										// };
+										// if(API.debug){ console.log(file); }
+										// API.request('files','upload',{data:file},function(result){
+										// 	var response = JSON.parse(result);
+										// 	if(response.success != undefined){
+										// 		if(API.Helper.isSet(layout,['timeline'])){
+										// 			API.Plugins.files.Timeline.object(response.output.file,layout);
+										// 		}
+										// 		if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
+										// 			var td = layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]');
+										// 			td.prepend(API.Plugins.files.Layouts.details.GUI.button(response.output.file,{download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 1)}));
+										// 			td.find('button[data-action="view"').off().click(function(){
+										// 			  API.Plugins.files.view($(this).attr('data-id'));
+										// 			});
+										// 			td.find('button[data-action="download"]').off().click(function(){
+										// 			  API.Plugins.files.download($(this).attr('data-id'));
+										// 			});
+										// 		}
+										// 		if(API.Helper.isSet(layout,['content','files'])){
+										// 			API.Plugins.files.Layouts.details.GUI.addRow(response.output.file,layout);
+										// 		}
+										// 	}
+										// });
 									});
-					        reader.readAsText(data,'UTF-8');
+					        // reader.readAsText(data);
+					        reader.readAsDataURL(data);
 								}
 							}, 100);
 							break;
