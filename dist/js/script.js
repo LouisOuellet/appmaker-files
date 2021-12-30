@@ -34,7 +34,7 @@ API.Plugins.files = {
 									clearInterval(checkStatus);
 									console.log(data);
 									console.log(zone);
-									console.log(zone.getUploadingFiles());
+									console.log(zone[0].getUploadingFiles());
 									// var file = {
 									// 	filename:data.name,
 									// 	dataURL:data.dataURL,
