@@ -6,6 +6,9 @@ API.Plugins.files = {
 		index:function(){},
 		details:function(){},
 	},
+	upload:function(){
+		console.log("Upload modal here");
+	},
 	download:function(id){
 		API.request('files','download',{data:{id:id}},function(result){
 			var data = JSON.parse(result);
@@ -46,7 +49,7 @@ API.Plugins.files = {
 		});
 	},
 	Timeline:{
-		icon:"file-download",
+		icon:"file",
 		object:function(dataset,layout,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
 			var defaults = {icon: API.Plugins.files.Timeline.icon,color: "warning"};
@@ -98,10 +101,19 @@ API.Plugins.files = {
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
 							td.append(API.Plugins.files.Layouts.details.GUI.button(file,{download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 1)}));
+							td.find('button[data-action="view"').off().click(function(){
+								API.Plugins.files.view($(this).attr('data-id'));
+							});
+							td.find('button[data-action="download"]').off().click(function(){
+								API.Plugins.files.download($(this).attr('data-id'));
+							});
 						}
 					}
 					if(API.Auth.validate('custom', url.searchParams.get("p")+'_files', 2)){
 						td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="upload"><i class="fas fa-file-upload"></i></button>');
+						td.find('button[data-action="upload"]').off().click(function(){
+							API.Plugins.files.upload();
+						});
 					}
 					API.Plugins.organizations.Layouts.details.Events(data,layout);
 					if(callback != null){ callback(data,layout,tr); }
@@ -143,13 +155,15 @@ API.Plugins.files = {
 						html += '</table>';
 					html += '</div>';
 					content.append(html);
+					content.find('button[data-action="upload"]').off().click(function(){
+						API.Plugins.files.upload();
+					});
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
 							API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
 						}
 					}
 				});
-				// API.Plugins.files.Layouts.details.Events(data,layout);
 				if(callback != null){ callback(dataset,layout); }
 			},
 			GUI:{
@@ -159,9 +173,9 @@ API.Plugins.files = {
 					var defaults = {download: false};
 					for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 					var html = '<div class="btn-group m-1" data-id="'+dataset.id+'">';
-						html += '<button type="button" class="btn btn-xs bg-primary"><i class="fas fa-file mr-1"></i>'+dataset.filename+'</button>';
+						html += '<button type="button" class="btn btn-xs bg-primary" data-id="'+dataset.id+'" data-action="view"><i class="fas fa-file mr-1"></i>'+dataset.filename+'</button>';
 						if(defaults.download){
-							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-name="'+dataset.name+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
+							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
 						}
 					html += '</div>';
 					if(callback != null){ callback(dataset,html); }
@@ -176,9 +190,9 @@ API.Plugins.files = {
 					var meta = {};
 					if(dataset.meta != ''){ meta = JSON.parse(dataset.meta); }
 					var html = '<tr data-csv="'+API.Helper.toCSV(dataset)+'" data-id="'+dataset.id+'">';
-						html += '<td class="pointer">'+dataset.filename+'</td>';
-						html += '<td class="pointer">'+API.Helper.getFileSize(dataset.size)+'</td>';
-						html += '<td class="pointer"></td>';
+						html += '<td class="pointer" data-id="'+dataset.id+'">'+dataset.filename+'</td>';
+						html += '<td class="pointer" data-id="'+dataset.id+'">'+API.Helper.getFileSize(dataset.size)+'</td>';
+						html += '<td class="pointer" data-id="'+dataset.id+'"></td>';
 						html += '<td>';
 							html += '<div class="btn-group btn-block m-0">';
 								html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+'</button>';
@@ -187,58 +201,14 @@ API.Plugins.files = {
 					html += '</tr>';
 					body.append(html);
 					var tr = body.find('tr').last();
+					tr.find('.pointer').off().click(function(){
+						API.Plugins.files.view($(this).attr('data-id'));
+					});
+					tr.find('button[data-action="download"]').off().click(function(){
+						API.Plugins.files.download($(this).attr('data-id'));
+					});
 					if(callback != null){ callback(dataset,layout,tr); }
 				},
-			},
-			Events:function(dataset,layout,options = {},callback = null){
-				var url = new URL(window.location.href);
-				if(options instanceof Function){ callback = options; options = {}; }
-				var defaults = {field: "name"};
-				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
-				if(API.Auth.validate('plugin', 'files', 2)){
-					layout.content.files.find('button').off().click(function(){
-					  if(!layout.content.files.find('textarea').summernote('isEmpty')){
-					    var note = {
-					      by:API.Contents.Auth.User.id,
-					      content:layout.content.files.find('textarea').summernote('code'),
-					      relationship:url.searchParams.get("p"),
-					      link_to:dataset.this.dom.id,
-					      status:dataset.this.raw.status,
-					    };
-					    layout.content.files.find('textarea').val('');
-					    layout.content.files.find('textarea').summernote('code','');
-					    layout.content.files.find('textarea').summernote('destroy');
-					    layout.content.files.find('textarea').summernote({
-					      toolbar: [
-					        ['font', ['fontname', 'fontsize']],
-					        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-					        ['color', ['color']],
-					        ['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
-					      ],
-					      height: 250,
-					    });
-					    API.request(url.searchParams.get("p"),'file',{data:note},function(result){
-					      var data = JSON.parse(result);
-					      if(data.success != undefined){
-									API.Plugins.files.Timeline.object(data.output.note.dom,layout);
-					      }
-					    });
-					    layout.tabs.find('a').first().tab('show');
-					  } else {
-					    layout.content.files.find('textarea').summernote('destroy');
-					    layout.content.files.find('textarea').summernote({
-					      toolbar: [
-					        ['font', ['fontname', 'fontsize']],
-					        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-					        ['color', ['color']],
-					        ['paragraph', ['style', 'ul', 'ol', 'paragraph', 'height']],
-					      ],
-					      height: 250,
-					    });
-					    alert(API.Contents.Language['File is empty']);
-					  }
-					});
-				}
 			},
 		},
 	},
