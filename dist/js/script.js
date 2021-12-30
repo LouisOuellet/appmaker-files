@@ -21,9 +21,11 @@ API.Plugins.files = {
 		API.request('files','download',{data:{id:id}},function(result){
 			var data = JSON.parse(result);
 			if(data.success != undefined){
+				console.log('Creating iframe');
 				$('body').append('<iframe class="downloadIFRAME"></iframe>');
 				var iframe = $('body').find('iframe.downloadIFRAME').last();
 				console.log(iframe);
+				console.log('Insert file URL');
 				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
 				// iframe.remove();
 			}
