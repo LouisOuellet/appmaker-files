@@ -23,7 +23,7 @@ class filesAPI extends APIextend {
       $file['encoding'] = $data['encoding'];
       $file['meta'] = '';
       $file['isAttachment'] = '';
-      $file['id'] = $this->save($file,["force" => true, "debug" => false]);
+      $file['id'] = $this->save($file,["debug" => false]);
       unset($file['file']);
       if($file['id'] != null || $file['id'] != ''){
         $this->createRelationship([
