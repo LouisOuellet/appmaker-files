@@ -9,7 +9,7 @@ class filesAPI extends APIextend {
         $file = $files[0];
         if(!isset($file['dirname']) || empty($file['dirname']) || $file['dirname'] == ''){
           $file['dirname'] = 'data/files/'.$file['id'];
-          $this->save($file,["force" => true,"debug" => false]);
+          $this->save($file,["force" => true, "debug" => false]);
         }
         if(!is_file($file['dirname'].'/'.$file['filename'])){
           if(!is_dir($file['dirname']) && !is_file($file['dirname'])){
@@ -83,7 +83,7 @@ class filesAPI extends APIextend {
         );
         set_time_limit(20);
         $fileID = $query->dump()['insert_id'];
-        if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['force']) || (isset($options['force']) && $options['force']))){ echo "[".$fileID."]File ".$file["filename"]." saved\n"; }
+        if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['debug']) || (isset($options['debug']) && $options['debug']))){ echo "[".$fileID."]File ".$file["filename"]." saved\n"; }
         return $fileID;
       } else {
         if(isset($options['force']) && $options['force']){
@@ -117,11 +117,11 @@ class filesAPI extends APIextend {
           ]);
           $dump = $query->dump();
         }
-        if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['force']) || (isset($options['force']) && $options['force']))){ echo "[".$files[0]['id']."]File ".$file["filename"]." found\n"; }
+        if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['debug']) || (isset($options['debug']) && $options['debug']))){ echo "[".$files[0]['id']."]File ".$file["filename"]." found\n"; }
         return $files[0]['id'];
       }
     } else {
-      if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['force']) || (isset($options['force']) && $options['force']))){ echo "[".$file["type"]."]This file type blacklisted\n"; }
+      if(isset($this->Settings['debug']) && $this->Settings['debug'] && (!isset($options['debug']) || (isset($options['debug']) && $options['debug']))){ echo "[".$file["type"]."]This file type blacklisted\n"; }
     }
   }
 }
