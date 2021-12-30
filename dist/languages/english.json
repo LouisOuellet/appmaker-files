@@ -3,5 +3,7 @@
 		"Files": "Files",
 		"Download": "Download",
 		"Filename": "Filename",
-		"Size": "Size"
+		"Size": "Size",
+		"Your download is ready!": "Your download is ready!",
+		"File not found!": "File not found!"
 }

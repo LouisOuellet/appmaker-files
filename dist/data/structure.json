@@ -69,6 +69,11 @@
             "order": 14,
             "type": "varchar(255)"
         },
-        "14": "isAttachment"
+        "14": "isAttachment",
+        "dirname": {
+            "order": 15,
+            "type": "varchar(255)"
+        },
+        "15": "dirname"
     }
 }

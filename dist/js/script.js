@@ -6,6 +6,28 @@ API.Plugins.files = {
 		index:function(){},
 		details:function(){},
 	},
+	download:function(id){
+		API.request('files','download',{data:{id:id}},function(result){
+			var data = JSON.parse(result);
+			if(data.success != undefined){
+				$('body').append('<iframe class="downloadIFRAME"></iframe>');
+				var iframe = $('body').find('iframe.downloadIFRAME').last();
+				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
+				iframe.remove();
+			}
+		});
+	},
+	view:function(id){
+		API.request('files','download',{data:{id:id}},function(result){
+			var data = JSON.parse(result);
+			if(data.success != undefined){
+				$('body').append('<iframe class="downloadIFRAME"></iframe>');
+				var iframe = $('body').find('iframe.downloadIFRAME').last();
+				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
+				iframe.remove();
+			}
+		});
+	},
 	Timeline:{
 		icon:"file-download",
 		object:function(dataset,layout,options = {},callback = null){
@@ -37,7 +59,7 @@ API.Plugins.files = {
 						layout.timeline.append(items);
 						element.find('i').first().addClass('pointer');
 						element.find('i').first().off().click(function(){
-							console.log('Download');
+							API.Plugins.files.download($(this).parent().attr('data-id'));
 						});
 						if(callback != null){ callback(element); }
 					}

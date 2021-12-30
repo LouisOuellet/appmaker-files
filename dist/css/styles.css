@@ -1,3 +1,6 @@
 .icon-files::before{
 	content: "\f15b";
 }
+.downloadIFRAME{
+	display:none;
+}
