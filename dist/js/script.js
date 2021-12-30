@@ -20,22 +20,29 @@ API.Plugins.files = {
 		});
 	},
 	view:function(id){
-		// API.request('files','download',{data:{id:id}},function(result){
-		// 	var data = JSON.parse(result);
-		// 	if(data.success != undefined){
-		// 		var link = document.createElement("a");
-		//     link.setAttribute('download', data.output.file.filename);
-		//     link.href = data.output.file.dirname+'/'+data.output.file.filename;
-		//     document.body.appendChild(link);
-		//     link.click();
-		//     link.remove();
-		// 		// $('body').append('<iframe class="downloadIFRAME"></iframe>');
-		// 		// var iframe = $('body').find('iframe.downloadIFRAME').last();
-		// 		// console.log(iframe);
-		// 		// iframe.attr('src',data.output.file.dirname+'/'+data.output.file.filename);
-		// 		// iframe.remove();
-		// 	}
-		// });
+		API.request('files','download',{data:{id:id}},function(result){
+			var data = JSON.parse(result);
+			if(data.success != undefined){
+				API.Builder.modal($('body'), {
+					title:'Viewport',
+					icon:'file',
+					zindex:'top',
+					css:{ header: "bg-primary"},
+				}, function(modal){
+					modal.on('hide.bs.modal',function(){ modal.remove(); });
+					var dialog = modal.find('.modal-dialog');
+					var header = modal.find('.modal-header');
+					var body = modal.find('.modal-body');
+					var footer = modal.find('.modal-footer');
+					header.find('button[data-control="hide"]').remove();
+					header.find('button[data-control="update"]').remove();
+					body.append('<iframe class="view-iframe"></iframe>');
+					var iframe = body.find('iframe');
+					iframe.attr('src',data.output.file.dirname+'/'+data.output.file.filename);
+					modal.modal('show');
+				});
+			}
+		});
 	},
 	Timeline:{
 		icon:"file-download",

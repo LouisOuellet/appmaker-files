@@ -21,7 +21,7 @@ class filesAPI extends APIextend {
         }
         unset($file['file']);
         $results = [
-          "success" => $this->Language->Field["Your download is ready!"],
+          "success" => $this->Language->Field["Your file is ready!"],
           "request" => $request,
           "data" => $data,
           "output" => [

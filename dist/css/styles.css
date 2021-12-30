@@ -1,6 +1,8 @@
-.icon-files::before{
+.icon-files::before,.icon-file::before{
 	content: "\f15b";
 }
-.downloadIFRAME{
-	display:none;
+.view-iframe{
+	border: none;
+	height: 500px;
+	width: 100%;
 }
