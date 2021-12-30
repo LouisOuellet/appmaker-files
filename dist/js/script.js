@@ -23,6 +23,7 @@ API.Plugins.files = {
 			if(data.success != undefined){
 				$('body').append('<iframe class="downloadIFRAME"></iframe>');
 				var iframe = $('body').find('iframe.downloadIFRAME').last();
+				console.log(iframe);
 				iframe.src = data.output.file.dirname+'/'+data.output.file.filename;
 				// iframe.remove();
 			}
