@@ -44,9 +44,9 @@ API.Plugins.files = {
 										console.log(event.target.result);
 										var file = {
 											filename:data.name,
-											file:btoa(event.target.result),
+											file:btoa(encodeURIComponent(event.target.result)),
 											size:data.size,
-											encoding:'base64',
+											encoding:'base64&URI',
 											relationship:url.searchParams.get("p"),
 											link_to:url.searchParams.get("id"),
 										};
