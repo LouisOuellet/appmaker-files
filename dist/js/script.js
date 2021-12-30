@@ -268,7 +268,7 @@ API.Plugins.files = {
 							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
 						}
 						if(defaults.delete){
-							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
+							html += '<button type="button" class="btn btn-xs bg-danger" data-id="'+dataset.id+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
 						}
 					html += '</div>';
 					if(callback != null){ callback(dataset,html); }
@@ -293,7 +293,7 @@ API.Plugins.files = {
 										html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+'</button>';
 									}
 									if(defaults.delete){
-										html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
+										html += '<button class="btn btn-xs btn-danger" data-id="'+dataset.id+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
 									}
 								html += '</div>';
 							html += '</td>';
