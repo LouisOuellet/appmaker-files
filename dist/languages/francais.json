@@ -6,5 +6,7 @@
 		"Size": "Size",
 		"Your file is ready!": "Your file is ready!",
 		"File not found!": "File not found!",
-		"Viewport": "Viewport"
+		"Viewport": "Viewport",
+		"File saved!": "File saved!",
+		"Unable to save file": "Unable to save file"
 }

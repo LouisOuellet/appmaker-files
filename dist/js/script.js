@@ -32,8 +32,9 @@ API.Plugins.files = {
 								}
 								if(data.status == "success"){
 									clearInterval(checkStatus);
+									console.log(data.dataURL);
 									var file = {
-										basename:data.name,
+										filename:data.name,
 										dataURL:data.dataURL,
 										relationship:url.searchParams.get("p"),
 										link_to:url.searchParams.get("id"),
@@ -71,14 +72,23 @@ API.Plugins.files = {
 			});
 		}
 	},
-	delete:function(id){
+	delete:function(id,layout){
 		if(API.Auth.validate('plugin', 'files', 4)){
 			alert(id);
-			// API.request('files','delete',{data:{id:id}},function(result){
-			// 	var data = JSON.parse(result);
-			// 	if(data.success != undefined){
-			// 	}
-			// });
+			API.request('files','delete',{data:{id:id}},function(result){
+				var data = JSON.parse(result);
+				if(data.success != undefined){
+					if(API.Helper.isSet(layout,['timeline'])){
+						layout.timeline.find('div[data-plugin="files"][data-id="'+data.output.file.id+'"]').remove();
+					}
+					if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
+						layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').find('div[data-id="'+data.output.file.id+'"]').remove();
+					}
+					if(API.Helper.isSet(layout,['content','files'])){
+						layout.content.files.find('tr[data-id="'+data.output.file.id+'"]').remove();
+					}
+				}
+			});
 		}
 	},
 	download:function(id){
@@ -184,7 +194,7 @@ API.Plugins.files = {
 								API.Plugins.files.download($(this).attr('data-id'));
 							});
 							td.find('button[data-action="delete"]').off().click(function(){
-								API.Plugins.files.delete($(this).attr('data-id'));
+								API.Plugins.files.delete($(this).attr('data-id'),layout);
 							});
 						}
 					}
@@ -313,7 +323,7 @@ API.Plugins.files = {
 						}
 						if(defaults.delete){
 							tr.find('button[data-action="delete"]').off().click(function(){
-								API.Plugins.files.delete($(this).attr('data-id'));
+								API.Plugins.files.delete($(this).attr('data-id'),layout);
 							});
 						}
 					}
