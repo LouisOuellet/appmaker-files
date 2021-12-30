@@ -73,6 +73,7 @@ API.Plugins.files = {
 	},
 	delete:function(id){
 		if(API.Auth.validate('plugin', 'files', 4)){
+			alert(id);
 			// API.request('files','delete',{data:{id:id}},function(result){
 			// 	var data = JSON.parse(result);
 			// 	if(data.success != undefined){
