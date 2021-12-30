@@ -7,7 +7,6 @@ API.Plugins.files = {
 		details:function(){},
 	},
 	download:function(id){
-		console.log(id);
 		API.request('files','download',{data:{id:id}},function(result){
 			var data = JSON.parse(result);
 			if(data.success != undefined){
@@ -17,15 +16,27 @@ API.Plugins.files = {
 		    document.body.appendChild(link);
 		    link.click();
 		    link.remove();
-				// $('body').append('<iframe class="downloadIFRAME"></iframe>');
-				// var iframe = $('body').find('iframe.downloadIFRAME').last();
-				// console.log(iframe);
-				// iframe.attr('src',data.output.file.dirname+'/'+data.output.file.filename);
-				// iframe.remove();
 			}
 		});
 	},
-	view:function(id){},
+	view:function(id){
+		// API.request('files','download',{data:{id:id}},function(result){
+		// 	var data = JSON.parse(result);
+		// 	if(data.success != undefined){
+		// 		var link = document.createElement("a");
+		//     link.setAttribute('download', data.output.file.filename);
+		//     link.href = data.output.file.dirname+'/'+data.output.file.filename;
+		//     document.body.appendChild(link);
+		//     link.click();
+		//     link.remove();
+		// 		// $('body').append('<iframe class="downloadIFRAME"></iframe>');
+		// 		// var iframe = $('body').find('iframe.downloadIFRAME').last();
+		// 		// console.log(iframe);
+		// 		// iframe.attr('src',data.output.file.dirname+'/'+data.output.file.filename);
+		// 		// iframe.remove();
+		// 	}
+		// });
+	},
 	Timeline:{
 		icon:"file-download",
 		object:function(dataset,layout,options = {},callback = null){
