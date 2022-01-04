@@ -2,6 +2,7 @@
 class filesAPI extends APIextend {
 
 	public function buildRelation($relations,$relation){
+    var_dump($relations[$relation['relationship']][$relation['link_to']]);
     unset($relations[$relation['relationship']][$relation['link_to']]['file']);
     return $relations;
   }
