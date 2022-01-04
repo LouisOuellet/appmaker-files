@@ -1,13 +1,6 @@
 <?php
 class filesAPI extends APIextend {
 
-	public function buildRelation($relations,$relation){
-    if(isset($relations[$relation['relationship']][$relation['link_to']]['file'])){
-      unset($relations[$relation['relationship']][$relation['link_to']]['file']);
-    }
-    return $relations;
-  }
-
   public function upload($request = null, $data = null){
     if(isset($data)){
       if(!is_array($data)){ $data = json_decode($data, true); }
