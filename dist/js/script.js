@@ -298,7 +298,7 @@ API.Plugins.files = {
 				} else {
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
-							if(td.find('tr[data-id="'+file.id+'"]').length <= 0){
+							if(layout.content.files.find('tr[data-id="'+file.id+'"]').length <= 0){
 								API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
 							}
 						}
