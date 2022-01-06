@@ -241,59 +241,67 @@ API.Plugins.files = {
 				if(options instanceof Function){ callback = options; options = {}; }
 				var defaults = {};
 				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
-				API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-file",text:API.Contents.Language["Files"]},function(data,layout,tab,content){
-					API.Builder.Timeline.add.filter(layout,'files','Files');
-					layout.content.files = content;
-					layout.tabs.files = tab;
-					var html = '<div class="row p-3">';
-						html += '<div class="col-md-12">';
-							html += '<div class="input-group">';
-								if(API.Auth.validate('plugin', 'files', 2)){
-									html += '<div class="btn-group mr-3">';
-										html += '<button data-action="upload" class="btn btn-success"><i class="fas fa-file-upload" aria-hidden="true"></i></button>';
-									html += '</div>';
-								}
-								html += '<input type="text" class="form-control">';
-								html += '<div class="input-group-append pointer" data-action="clear"><span class="input-group-text"><i class="fas fa-times"></i></span></div>';
-								html += '<div class="input-group-append"><span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language['Search']+'</span></div>';
+				if(!API.Helper.isSet(layout,['content','files'])){
+					API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-file",text:API.Contents.Language["Files"]},function(data,layout,tab,content){
+						API.Builder.Timeline.add.filter(layout,'files','Files');
+						layout.content.files = content;
+						layout.tabs.files = tab;
+						var html = '<div class="row p-3">';
+							html += '<div class="col-md-12">';
+								html += '<div class="input-group">';
+									if(API.Auth.validate('plugin', 'files', 2)){
+										html += '<div class="btn-group mr-3">';
+											html += '<button data-action="upload" class="btn btn-success"><i class="fas fa-file-upload" aria-hidden="true"></i></button>';
+										html += '</div>';
+									}
+									html += '<input type="text" class="form-control">';
+									html += '<div class="input-group-append pointer" data-action="clear"><span class="input-group-text"><i class="fas fa-times"></i></span></div>';
+									html += '<div class="input-group-append"><span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language['Search']+'</span></div>';
+								html += '</div>';
 							html += '</div>';
 						html += '</div>';
-					html += '</div>';
-					html += '<div class="row px-2 py-0">';
-						html += '<table class="table table-sm table-striped table-hover mb-0">';
-							html += '<thead>';
-								html += '<tr>';
-									html += '<th data-header="filename">'+API.Contents.Language['Filename']+'</th>';
-									html += '<th data-header="size">'+API.Contents.Language['Size']+'</th>';
-									html += '<th data-header="meta">'+API.Contents.Language['Meta']+'</th>';
-									html += '<th data-header="action">'+API.Contents.Language['Action']+'</th>';
-								html += '</tr>';
-							html += '</thead>';
-							html += '<tbody></tbody>';
-						html += '</table>';
-					html += '</div>';
-					content.append(html);
-					var search = content.find('div.row').eq(0);
-					var files = content.find('div.row').eq(1);
-					search.find('div[data-action="clear"]').off().click(function(){
-						$(this).parent().find('input').val('');
-						files.find('[data-csv]').show();
+						html += '<div class="row px-2 py-0">';
+							html += '<table class="table table-sm table-striped table-hover mb-0">';
+								html += '<thead>';
+									html += '<tr>';
+										html += '<th data-header="filename">'+API.Contents.Language['Filename']+'</th>';
+										html += '<th data-header="size">'+API.Contents.Language['Size']+'</th>';
+										html += '<th data-header="meta">'+API.Contents.Language['Meta']+'</th>';
+										html += '<th data-header="action">'+API.Contents.Language['Action']+'</th>';
+									html += '</tr>';
+								html += '</thead>';
+								html += '<tbody></tbody>';
+							html += '</table>';
+						html += '</div>';
+						content.append(html);
+						var search = content.find('div.row').eq(0);
+						var files = content.find('div.row').eq(1);
+						search.find('div[data-action="clear"]').off().click(function(){
+							$(this).parent().find('input').val('');
+							files.find('[data-csv]').show();
+						});
+						search.find('input').off().on('input',function(){
+							if($(this).val() != ''){
+								files.find('[data-csv]').hide();
+								files.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
+							} else { files.find('[data-csv]').show(); }
+						});
+						search.find('button[data-action="upload"]').off().click(function(){
+							API.Plugins.files.upload(layout);
+						});
+						if(API.Helper.isSet(data,['relations','files'])){
+							for(var [id, file] of Object.entries(data.relations.files)){
+								API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
+							}
+						}
 					});
-					search.find('input').off().on('input',function(){
-						if($(this).val() != ''){
-							files.find('[data-csv]').hide();
-							files.find('[data-csv*="'+$(this).val().toLowerCase()+'"]').each(function(){ $(this).show(); });
-						} else { files.find('[data-csv]').show(); }
-					});
-					search.find('button[data-action="upload"]').off().click(function(){
-						API.Plugins.files.upload(layout);
-					});
+				} else {
 					if(API.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
 							API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
 						}
 					}
-				});
+				}
 				if(callback != null){ callback(dataset,layout); }
 			},
 			GUI:{

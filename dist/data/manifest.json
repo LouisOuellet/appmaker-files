@@ -9,12 +9,10 @@
         }
     },
     "requirements": {
-        "table": [
-            "files"
-        ]
+        "table": []
     },
     "name": "files",
     "status": false,
-    "build": 95,
+    "build": 98,
     "version": "22.01-dev"
 }
