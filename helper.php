@@ -11,11 +11,11 @@ class filesHelper extends Helper {
   }
 
 	public function convertToDOM($result){
-		if((!empty($result))&&(is_array($result))){
-			if(isset($result['file'])){
-				unset($result['file']);
-			}
-		}
-    return $result;
+		// if((!empty($result))&&(is_array($result))){
+		// 	if(isset($result['file'])){
+		// 		unset($result['file']);
+		// 	}
+		// }
+    // return $result;
   }
 }
