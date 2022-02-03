@@ -9,17 +9,11 @@ class filesHelper extends Helper {
     }
     return $relations;
   }
-	
+
 	public function convertToDOM($result){
 		if((!empty($result))&&(is_array($result))){
-			foreach($result as $key => $value){
-				switch($key){
-					case"file":
-						unset($result[$key]);
-						break;
-					default:
-						break;
-				}
+			if(isset($result['file'])){
+				unset($result['file']);
 			}
 		}
     return $result;
