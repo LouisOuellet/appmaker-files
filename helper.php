@@ -9,6 +9,7 @@ class filesHelper extends Helper {
     }
     return $relations;
   }
+	
 	public function convertToDOM($result){
 		if((!empty($result))&&(is_array($result))){
 			foreach($result as $key => $value){
