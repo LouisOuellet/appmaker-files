@@ -1,15 +1,15 @@
-API.Plugins.files = {
+Engine.Plugins.files = {
 	init:function(){
-		API.GUI.Sidebar.Nav.add('files', 'main_navigation');
+		Engine.GUI.Sidebar.Nav.add('files', 'main_navigation');
 	},
 	load:{
 		index:function(){},
 		details:function(){},
 	},
 	upload:function(layout){
-		if(API.Auth.validate('plugin', 'files', 2)){
+		if(Engine.Auth.validate('plugin', 'files', 2)){
 			var url = new URL(window.location.href);
-			API.Builder.modal($('body'), {
+			Engine.Builder.modal($('body'), {
 				title:'Upload',
 				icon:'upload',
 				zindex:'top',
@@ -22,7 +22,7 @@ API.Plugins.files = {
 				var footer = modal.find('.modal-footer');
 				header.find('button[data-control="hide"]').remove();
 				header.find('button[data-control="update"]').remove();
-				API.Builder.dropzone(body,function(action,zone,data){
+				Engine.Builder.dropzone(body,function(action,zone,data){
 					switch(action){
 						case"sending":
 							var checkStatus = setInterval(function(){
@@ -41,25 +41,25 @@ API.Plugins.files = {
 											relationship:url.searchParams.get("p"),
 											link_to:url.searchParams.get("id"),
 										};
-										if(API.debug){ console.log(file); }
-										API.request('files','upload',{data:file},function(result){
+										if(Engine.debug){ console.log(file); }
+										Engine.request('files','upload',{data:file},function(result){
 											var response = JSON.parse(result);
 											if(response.success != undefined){
-												if(API.Helper.isSet(layout,['timeline'])){
-													API.Plugins.files.Timeline.object(response.output.file,layout);
+												if(Engine.Helper.isSet(layout,['timeline'])){
+													Engine.Plugins.files.Timeline.object(response.output.file,layout);
 												}
-												if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
+												if(Engine.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
 													var td = layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]');
-													td.prepend(API.Plugins.files.Layouts.details.GUI.button(response.output.file,{download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 1)}));
+													td.prepend(Engine.Plugins.files.Layouts.details.GUI.button(response.output.file,{download:Engine.Auth.validate('custom', url.searchParams.get("p")+'_files', 1)}));
 													td.find('button[data-action="view"').off().click(function(){
-													  API.Plugins.files.view($(this).attr('data-id'));
+													  Engine.Plugins.files.view($(this).attr('data-id'));
 													});
 													td.find('button[data-action="download"]').off().click(function(){
-													  API.Plugins.files.download($(this).attr('data-id'));
+													  Engine.Plugins.files.download($(this).attr('data-id'));
 													});
 												}
-												if(API.Helper.isSet(layout,['content','files'])){
-													API.Plugins.files.Layouts.details.GUI.addRow(response.output.file,layout);
+												if(Engine.Helper.isSet(layout,['content','files'])){
+													Engine.Plugins.files.Layouts.details.GUI.addRow(response.output.file,layout);
 												}
 											}
 										});
@@ -69,11 +69,11 @@ API.Plugins.files = {
 							}, 100);
 							break;
 						case"queuecomplete":
-							if(API.debug){ console.log(action,zone,data); }
+							if(Engine.debug){ console.log(action,zone,data); }
 							modal.modal('hide');
 							break;
 						default:
-							if(API.debug){ console.log(action,zone,data); }
+							if(Engine.debug){ console.log(action,zone,data); }
 							break;
 					}
 				});
@@ -82,9 +82,9 @@ API.Plugins.files = {
 		}
 	},
 	delete:function(id,name,layout){
-		if(API.Auth.validate('plugin', 'files', 4)){
+		if(Engine.Auth.validate('plugin', 'files', 4)){
 			var url = new URL(window.location.href);
-			API.Builder.modal($('body'), {
+			Engine.Builder.modal($('body'), {
 				title:'Are you sure?',
 				icon:'delete',
 				zindex:'top',
@@ -97,19 +97,19 @@ API.Plugins.files = {
 				var footer = modal.find('.modal-footer');
 				header.find('button[data-control="hide"]').remove();
 				header.find('button[data-control="update"]').remove();
-				body.html(API.Contents.Language['Are you sure you want to delete']+'<strong class="mx-1">'+name+'</strong>?');
-				footer.append('<button class="btn btn-danger" data-action="delete"><i class="fas fa-trash-alt mr-1"></i>'+API.Contents.Language['Delete']+'</button>');
+				body.html(Engine.Contents.Language['Are you sure you want to delete']+'<strong class="mx-1">'+name+'</strong>?');
+				footer.append('<button class="btn btn-danger" data-action="delete"><i class="fas fa-trash-alt mr-1"></i>'+Engine.Contents.Language['Delete']+'</button>');
 				footer.find('button[data-action="delete"]').off().click(function(){
-					API.request('files','delete',{data:{id:id}},function(result){
+					Engine.request('files','delete',{data:{id:id}},function(result){
 						var data = JSON.parse(result);
 						if(data.success != undefined){
-							if(API.Helper.isSet(layout,['timeline'])){
+							if(Engine.Helper.isSet(layout,['timeline'])){
 								layout.timeline.find('div[data-plugin="files"][data-id="'+data.output.file.id+'"]').remove();
 							}
-							if(API.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
+							if(Engine.Helper.isSet(layout,['details']) && layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').length > 0){
 								layout.details.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]').find('div[data-id="'+data.output.file.id+'"]').remove();
 							}
-							if(API.Helper.isSet(layout,['content','files'])){
+							if(Engine.Helper.isSet(layout,['content','files'])){
 								layout.content.files.find('tr[data-id="'+data.output.file.id+'"]').remove();
 							}
 						}
@@ -121,8 +121,8 @@ API.Plugins.files = {
 		}
 	},
 	download:function(id){
-		if(API.Auth.validate('plugin', 'files', 1)){
-			API.request('files','download',{data:{id:id}},function(result){
+		if(Engine.Auth.validate('plugin', 'files', 1)){
+			Engine.request('files','download',{data:{id:id}},function(result){
 				var data = JSON.parse(result);
 				if(data.success != undefined){
 					var link = document.createElement("a");
@@ -136,11 +136,11 @@ API.Plugins.files = {
 		}
 	},
 	view:function(id){
-		if(API.Auth.validate('plugin', 'files', 1)){
-			API.request('files','download',{data:{id:id}},function(result){
+		if(Engine.Auth.validate('plugin', 'files', 1)){
+			Engine.request('files','download',{data:{id:id}},function(result){
 				var data = JSON.parse(result);
 				if(data.success != undefined){
-					API.Builder.modal($('body'), {
+					Engine.Builder.modal($('body'), {
 						title:'Viewport',
 						icon:'viewport',
 						zindex:'top',
@@ -167,21 +167,21 @@ API.Plugins.files = {
 		icon:"file",
 		object:function(dataset,layout,options = {},callback = null){
 			if(options instanceof Function){ callback = options; options = {}; }
-			var defaults = {icon: API.Plugins.files.Timeline.icon,color: "warning"};
-			for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+			var defaults = {icon: Engine.Plugins.files.Timeline.icon,color: "warning"};
+			for(var [key, option] of Object.entries(options)){ if(Engine.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 			if(typeof dataset.id !== 'undefined'){
 				var dateItem = new Date(dataset.created);
 				var dateUS = dateItem.toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'}).replace(/ /g, '-').replace(/,/g, '');
-				API.Builder.Timeline.add.date(layout.timeline,dataset.created);
+				Engine.Builder.Timeline.add.date(layout.timeline,dataset.created);
 				var checkExist = setInterval(function() {
 					if(layout.timeline.find('div.time-label[data-dateus="'+dateUS+'"]').length > 0){
 						clearInterval(checkExist);
-						API.Builder.Timeline.add.filter(layout,'files','Files');
+						Engine.Builder.Timeline.add.filter(layout,'files','Files');
 						var html = '<div data-plugin="files" data-id="'+dataset.id+'" data-date="'+dateItem.getTime()+'">';
 							html += '<i class="fas fa-'+defaults.icon+' bg-'+defaults.color+'"></i>';
 							html += '<div class="timeline-item">';
 								html += '<span class="time"><i class="fas fa-clock mr-2"></i><time class="timeago" datetime="'+dataset.created.replace(/ /g, "T")+'">'+dataset.created+'</time></span>';
-								html += '<h3 class="timeline-header border-0">'+dataset.filename+' ('+API.Helper.getFileSize(dataset.size)+') was uploaded</h3>';
+								html += '<h3 class="timeline-header border-0">'+dataset.filename+' ('+Engine.Helper.getFileSize(dataset.size)+') was uploaded</h3>';
 							html += '</div>';
 						html += '</div>';
 						layout.timeline.find('div.time-label[data-dateus="'+dateUS+'"]').after(html);
@@ -194,7 +194,7 @@ API.Plugins.files = {
 						layout.timeline.append(items);
 						element.find('i').first().addClass('pointer');
 						element.find('i').first().off().click(function(){
-							API.Plugins.files.view($(this).parent().attr('data-id'));
+							Engine.Plugins.files.view($(this).parent().attr('data-id'));
 						});
 						if(callback != null){ callback(element); }
 					}
@@ -208,55 +208,55 @@ API.Plugins.files = {
 				if(options instanceof Function){ callback = options; options = {}; }
 				var url = new URL(window.location.href);
 				var defaults = {field: "files", plugin:url.searchParams.get("p")};
-				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
-				API.Builder.Timeline.add.filter(layout,'files','Files');
-				API.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
+				for(var [key, option] of Object.entries(options)){ if(Engine.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+				Engine.Builder.Timeline.add.filter(layout,'files','Files');
+				Engine.GUI.Layouts.details.data(data,layout,defaults,function(data,layout,tr){
 					var td = tr.find('td[data-plugin="'+url.searchParams.get("p")+'"][data-key="files"]');
 					td.html('');
-					if(API.Helper.isSet(data,['relations','files'])){
+					if(Engine.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
-							td.append(API.Plugins.files.Layouts.details.GUI.button(file,{download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 1),download:API.Auth.validate('custom', url.searchParams.get("p")+'_files', 4)}));
+							td.append(Engine.Plugins.files.Layouts.details.GUI.button(file,{download:Engine.Auth.validate('custom', url.searchParams.get("p")+'_files', 1),download:Engine.Auth.validate('custom', url.searchParams.get("p")+'_files', 4)}));
 							td.find('button[data-action="view"').off().click(function(){
-								API.Plugins.files.view($(this).attr('data-id'));
+								Engine.Plugins.files.view($(this).attr('data-id'));
 							});
 							td.find('button[data-action="download"]').off().click(function(){
-								API.Plugins.files.download($(this).attr('data-id'));
+								Engine.Plugins.files.download($(this).attr('data-id'));
 							});
 							td.find('button[data-action="delete"]').off().click(function(){
-								API.Plugins.files.delete($(this).attr('data-id'),$(this).attr('data-name'),layout);
+								Engine.Plugins.files.delete($(this).attr('data-id'),$(this).attr('data-name'),layout);
 							});
 						}
 					}
-					if(API.Auth.validate('custom', url.searchParams.get("p")+'_files', 2)){
+					if(Engine.Auth.validate('custom', url.searchParams.get("p")+'_files', 2)){
 						td.append('<button type="button" class="btn btn-xs btn-success mx-1" data-action="upload"><i class="fas fa-file-upload"></i></button>');
 						td.find('button[data-action="upload"]').off().click(function(){
-							API.Plugins.files.upload(layout);
+							Engine.Plugins.files.upload(layout);
 						});
 					}
-					API.Plugins.organizations.Layouts.details.Events(data,layout);
+					Engine.Plugins.organizations.Layouts.details.Events(data,layout);
 					if(callback != null){ callback(data,layout,tr); }
 				});
 			},
 			tab:function(data,layout,options = {},callback = null){
 				if(options instanceof Function){ callback = options; options = {}; }
 				var defaults = {};
-				for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
-				if(!API.Helper.isSet(layout,['content','files'])){
-					API.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-file",text:API.Contents.Language["Files"]},function(data,layout,tab,content){
-						API.Builder.Timeline.add.filter(layout,'files','Files');
+				for(var [key, option] of Object.entries(options)){ if(Engine.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+				if(!Engine.Helper.isSet(layout,['content','files'])){
+					Engine.GUI.Layouts.details.tab(data,layout,{icon:"fas fa-file",text:Engine.Contents.Language["Files"]},function(data,layout,tab,content){
+						Engine.Builder.Timeline.add.filter(layout,'files','Files');
 						layout.content.files = content;
 						layout.tabs.files = tab;
 						var html = '<div class="row p-3">';
 							html += '<div class="col-md-12">';
 								html += '<div class="input-group">';
-									if(API.Auth.validate('plugin', 'files', 2)){
+									if(Engine.Auth.validate('plugin', 'files', 2)){
 										html += '<div class="btn-group mr-3">';
 											html += '<button data-action="upload" class="btn btn-success"><i class="fas fa-file-upload" aria-hidden="true"></i></button>';
 										html += '</div>';
 									}
 									html += '<input type="text" class="form-control">';
 									html += '<div class="input-group-append pointer" data-action="clear"><span class="input-group-text"><i class="fas fa-times"></i></span></div>';
-									html += '<div class="input-group-append"><span class="input-group-text"><i class="icon icon-search mr-1"></i>'+API.Contents.Language['Search']+'</span></div>';
+									html += '<div class="input-group-append"><span class="input-group-text"><i class="icon icon-search mr-1"></i>'+Engine.Contents.Language['Search']+'</span></div>';
 								html += '</div>';
 							html += '</div>';
 						html += '</div>';
@@ -264,10 +264,10 @@ API.Plugins.files = {
 							html += '<table class="table table-sm table-striped table-hover mb-0">';
 								html += '<thead>';
 									html += '<tr>';
-										html += '<th data-header="filename">'+API.Contents.Language['Filename']+'</th>';
-										html += '<th data-header="size">'+API.Contents.Language['Size']+'</th>';
-										html += '<th data-header="meta">'+API.Contents.Language['Meta']+'</th>';
-										html += '<th data-header="action">'+API.Contents.Language['Action']+'</th>';
+										html += '<th data-header="filename">'+Engine.Contents.Language['Filename']+'</th>';
+										html += '<th data-header="size">'+Engine.Contents.Language['Size']+'</th>';
+										html += '<th data-header="meta">'+Engine.Contents.Language['Meta']+'</th>';
+										html += '<th data-header="action">'+Engine.Contents.Language['Action']+'</th>';
 									html += '</tr>';
 								html += '</thead>';
 								html += '<tbody></tbody>';
@@ -287,19 +287,19 @@ API.Plugins.files = {
 							} else { files.find('[data-csv]').show(); }
 						});
 						search.find('button[data-action="upload"]').off().click(function(){
-							API.Plugins.files.upload(layout);
+							Engine.Plugins.files.upload(layout);
 						});
-						if(API.Helper.isSet(data,['relations','files'])){
+						if(Engine.Helper.isSet(data,['relations','files'])){
 							for(var [id, file] of Object.entries(data.relations.files)){
-								API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
+								Engine.Plugins.files.Layouts.details.GUI.addRow(file,layout);
 							}
 						}
 					});
 				} else {
-					if(API.Helper.isSet(data,['relations','files'])){
+					if(Engine.Helper.isSet(data,['relations','files'])){
 						for(var [id, file] of Object.entries(data.relations.files)){
 							if(layout.content.files.find('tr[data-id="'+file.id+'"]').length <= 0){
-								API.Plugins.files.Layouts.details.GUI.addRow(file,layout);
+								Engine.Plugins.files.Layouts.details.GUI.addRow(file,layout);
 							}
 						}
 					}
@@ -310,12 +310,12 @@ API.Plugins.files = {
 				button:function(dataset,options = {},callback = null){
 					var url = new URL(window.location.href);
 					if(options instanceof Function){ callback = options; options = {}; }
-					var defaults = {download: API.Auth.validate('plugin', 'files', 1),delete: API.Auth.validate('plugin', 'files', 4)};
-					for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+					var defaults = {download: Engine.Auth.validate('plugin', 'files', 1),delete: Engine.Auth.validate('plugin', 'files', 4)};
+					for(var [key, option] of Object.entries(options)){ if(Engine.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 					var html = '<div class="btn-group m-1" data-id="'+dataset.id+'">';
 						html += '<button type="button" class="btn btn-xs bg-primary" data-id="'+dataset.id+'" data-action="view"><i class="fas fa-file mr-1"></i>'+dataset.filename+'</button>';
 						if(defaults.download){
-							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Helper.getFileSize(dataset.size)+'</button>';
+							html += '<button type="button" class="btn btn-xs bg-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+Engine.Helper.getFileSize(dataset.size)+'</button>';
 						}
 						if(defaults.delete){
 							html += '<button type="button" class="btn btn-xs bg-danger" data-id="'+dataset.id+'" data-name="'+dataset.filename+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
@@ -327,20 +327,20 @@ API.Plugins.files = {
 				addRow:function(dataset,layout,options = {},callback = null){
 					var url = new URL(window.location.href);
 					if(options instanceof Function){ callback = options; options = {}; }
-					var defaults = {view: API.Auth.validate('plugin', 'files', 1),list: API.Auth.validate('plugin', 'files', 1),download: API.Auth.validate('plugin', 'files', 1),delete: API.Auth.validate('plugin', 'files', 4)};
-					for(var [key, option] of Object.entries(options)){ if(API.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
+					var defaults = {view: Engine.Auth.validate('plugin', 'files', 1),list: Engine.Auth.validate('plugin', 'files', 1),download: Engine.Auth.validate('plugin', 'files', 1),delete: Engine.Auth.validate('plugin', 'files', 4)};
+					for(var [key, option] of Object.entries(options)){ if(Engine.Helper.isSet(defaults,[key])){ defaults[key] = option; } }
 					var body = layout.content.files.find('tbody');
 					var meta = {};
 					if(dataset.meta != ''){ meta = JSON.parse(dataset.meta); }
 					if(defaults.list){
-						var html = '<tr data-csv="'+API.Helper.toCSV(dataset)+'" data-id="'+dataset.id+'">';
+						var html = '<tr data-csv="'+Engine.Helper.toCSV(dataset)+'" data-id="'+dataset.id+'">';
 							html += '<td class="pointer" data-id="'+dataset.id+'">'+dataset.filename+'</td>';
-							html += '<td class="pointer" data-id="'+dataset.id+'">'+API.Helper.getFileSize(dataset.size)+'</td>';
+							html += '<td class="pointer" data-id="'+dataset.id+'">'+Engine.Helper.getFileSize(dataset.size)+'</td>';
 							html += '<td class="pointer" data-id="'+dataset.id+'"></td>';
 							html += '<td>';
 								html += '<div class="btn-group btn-block m-0">';
 									if(defaults.download){
-										html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+API.Contents.Language['Download']+'</button>';
+										html += '<button class="btn btn-xs btn-warning" data-id="'+dataset.id+'" data-action="download"><i class="fas fa-file-download mr-1"></i>'+Engine.Contents.Language['Download']+'</button>';
 									}
 									if(defaults.delete){
 										html += '<button class="btn btn-xs btn-danger" data-id="'+dataset.id+'" data-name="'+dataset.filename+'" data-action="delete"><i class="fas fa-trash-alt"></i></button>';
@@ -352,17 +352,17 @@ API.Plugins.files = {
 						var tr = body.find('tr').last();
 						if(defaults.view){
 							tr.find('.pointer').off().click(function(){
-								API.Plugins.files.view($(this).attr('data-id'));
+								Engine.Plugins.files.view($(this).attr('data-id'));
 							});
 						}
 						if(defaults.download){
 							tr.find('button[data-action="download"]').off().click(function(){
-								API.Plugins.files.download($(this).attr('data-id'));
+								Engine.Plugins.files.download($(this).attr('data-id'));
 							});
 						}
 						if(defaults.delete){
 							tr.find('button[data-action="delete"]').off().click(function(){
-								API.Plugins.files.delete($(this).attr('data-id'),$(this).attr('data-name'),layout);
+								Engine.Plugins.files.delete($(this).attr('data-id'),$(this).attr('data-name'),layout);
 							});
 						}
 					}
@@ -373,4 +373,4 @@ API.Plugins.files = {
 	},
 }
 
-API.Plugins.files.init();
+Engine.Plugins.files.init();
