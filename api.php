@@ -155,7 +155,7 @@ class filesAPI extends APIextend {
 
   public function save($file,$options = []){
     if(!isset($this->Settings['plugins']['files']['settings']['blacklist'])||(isset($this->Settings['plugins']['files']['settings']['blacklist']) && is_array($this->Settings['plugins']['files']['settings']['blacklist']) && !in_array($file['type'], $this->Settings['plugins']['files']['settings']['blacklist']))){
-      if(!isset($file["id"]))
+      if(!isset($file["id"])){
         if(!isset($file["checksum"])){ $file["checksum"] = md5($file["file"]); }
         $files = $this->Auth->query('SELECT * FROM `files` WHERE `checksum` = ? OR (`filename` = ? AND `size` = ?) OR (`name` = ? AND `size` = ?)',$file["checksum"],$file["filename"],$file["size"],$file["name"],$file["size"])->fetchAll()->all();
         if(empty($files)){
