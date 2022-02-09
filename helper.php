@@ -20,11 +20,14 @@ class filesHelper extends Helper {
   }
 
 	public function write($file){
-		$file['dirname'] = 'data/files/'.$file['id'];
+		if($file['dirname'] != '' && $file['dirname'] != null){ $file['dirname'] = 'data/files/'.$file['id']; }
+		if(!is_dir($file['dirname']) && !is_file($file['dirname'])){ $this->mkdir($file['dirname']); }
 		$this->save($file,["force" => true, "debug" => false]);
-		$write = fopen($file['dirname'].'/'.$file['filename'], "w");
-		fwrite($write, $file['file']);
-		fclose($write);
+		if(!is_file($file['dirname'].'/'.$file['filename'])){
+			$write = fopen($file['dirname'].'/'.$file['filename'], "w");
+			fwrite($write, $file['file']);
+			fclose($write);
+		}
 		return $file['dirname'].'/'.$file['filename'];
 	}
 
